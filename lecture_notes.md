@@ -210,7 +210,9 @@ p(H|I) =
 \end{cases}
 \\]
 Using these we can calculate our posterior, $p(H|d,I)$, as we obtain more data (counting $r$ as the
-number of coin tosses, $n$, increases).
+number of coin tosses, $n$, increases).[^fncoinscript]
+
+[^fncoinscript]: See <!--\href{https://github.com/mattpitkin/InferenceWorkshopLecture/blob/master/figures/scripts/coin\_toss.py}{\tt coin\_toss.py} -->
 
 
 ### A Bayesian example: is a coin fair? ###
@@ -244,7 +246,9 @@ expected 'fair coin' value
 \\[
 p(H|I) \propto \exp{\left(-\frac{1}{2}\frac{(H-\mu_H)^2}{\sigma_H^2}\right)},
 \\]
-with $\sigma_H = 0.05$ and $\mu_H = 0.5$.
+with $\sigma_H = 0.05$ and $\mu_H = 0.5$.[^fncoinscript2]
+
+[^fncoinscript2]: See <!--\href{https://github.com/mattpitkin/InferenceWorkshopLecture/blob/master/figures/scripts/coin\_toss\_2.py}{\tt coin\_toss\_2.py} -->
 
 
 ### A Bayesian example: is a coin fair? ###
@@ -262,7 +266,7 @@ What do we learn from this?
 less sensitive to our choice of prior (i.e. the likelihood starts to dominate)
 * The posterior conveys our (evolving) degree of belief in different values of $H$ given our
 data
-* If we want to express our belief as a **single number** we can adopt e.g. the mean, median or mode
+* If we want to express our belief as a **single number** we can adopt e.g., the mean, median or mode
 * It is very straightforward to define _Bayesian confidence intervals_ (more correctly termed
 **credible intervals**), to quantify our uncertainty on $H$.
 
@@ -333,6 +337,29 @@ p(\mathbf{d}|\vec{\theta},\sigma,I) &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2
 &= \left(2\pi\sigma^2\right)^{-n/2}\exp{\left(-\frac{1}{2}\sum_{i=1}^n\frac{\left(d_i-s_i(\vec{\theta})\right)^2}{\sigma^2} \right)}
 \end{empheq}-->
 
+
+### The joint likelihood: non-_i.i.d._ ###
+
+If the noise process for points is Gaussian, but the noise is _not_
+correlated, i.e., each point (or a subset of points) has a different _known_ variance $\bm{\sigma} = \{\sigma_1, \dots, \sigma_n\}$, we have:
+
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+p(\mathbf{d}|\vec{\theta},\bm{\sigma},I) = \left(\prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma_i^2}}\right)\exp{\left(-\frac{\left(d_i-s_i(\vec{\theta})\right)^2}{2\sigma_i^2} \right)}.
+\end{empheq}-->
+
+
+### The joint likelihood: non-_i.i.d._ ###
+
+If the noise process for points is Gaussian, but the noise is
+correlated, but the covariance matrix $\bm{\Sigma}$ is known, we have a <!-- \href{https://en.wikipedia.org/wiki/Multivariate\_normal\_distribution}{\it multivariate normal distribution}-->:
+
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+p(\mathbf{d}|\vec{\theta}, \bm{\Sigma}, I) = \left(2\pi\right)^{n/2}\left|\bm{\Sigma}\right|^{-1/2}\exp{\left(-\frac{1}{2}\left(\mathbf{d} - \mathbf{s}(\vec{\theta})\right)'\bm{\Sigma}^{-1}\left(\mathbf{d} - \mathbf{s}(\vec{\theta})\right)\right)},
+\end{empheq}-->
+
+where $\mathbf{s}(\vec{\theta}) = \{s_1(\vec{\theta)}, \dots, s_n(\vec{\theta)}\}$. This becomes the previous case if $\bm{\Sigma}$ is diagonal.
+
+The covariance is ...
 
 
 ### Inference for gravitational-wave astronomy ###

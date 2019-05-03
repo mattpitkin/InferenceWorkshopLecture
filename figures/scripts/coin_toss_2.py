@@ -68,6 +68,8 @@ for i, n in enumerate(nt):
     ax.set_xticklabels([])
  
   ax.text(0.65, 0.8*ax.get_ylim()[1], '$n=%d$' % n, fontsize=16)
+  ax.set_xlim([0., 1.])
+  ax.set_ylim([0., 1.1 * np.max([np.max(post2), np.max(post1)])])
  
   nprev = n
 
