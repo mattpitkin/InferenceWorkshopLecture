@@ -20,22 +20,23 @@ latex footer:	mmd-beamer-footer
 
 ### Overview ###
 
-**Part 1**: _An introduction to statistics and inference_
-
-* Rules of probability
-* Bayes' theorem
-* Important probability density functions (pdf)
-* Moments of pdfs
+* Introduction
+  * Rules of probability
+  * Bayes' theorem
+* Gravitational-wave inference
+  * the likelihood function
+  * the priors
+  * parameter estimation examples
+  * model selection
+  * hierarchical inference
 
 
 ### Introduction ###
 
-This lecture course is based heavily on the <!--\href{http://www.astro.gla.ac.uk/users/martin/supa-da.html}{SUPA Advanced Data Analysis}--> course by Prof. Martin Hendry. 
-
 There are many textbooks on statistics (and Bayesian statistics in particular), but three I can 
 recommend are:
 
-<!--\begin{columns}
+<!--\begin{columns}[T]
 \begin{column}{0.33\textwidth}-->
 ![][Sivia]
 <!--\end{column}
@@ -47,13 +48,15 @@ recommend are:
 <!--\end{column}
 \end{columns}-->
 
-[Sivia]: figures/sivia.jpg "Sivia" height="150px"
-[Gregory]: figures/gregory.jpg "Gregory" height="150px"
-[MacKay]: figures/mackay.jpg "MacKay" height="150px"
+[Sivia]: figures/sivia.jpg "Sivia" height="140px" width="105px"
+[Gregory]: figures/gregory.jpg "Gregory" height="140px" width="105px"
+[MacKay]: figures/mackay.jpg "MacKay" height="140px" width="105px"
+
 
 ### Papers to read ###
 
 LALInference paper [][#2015PhRvD..91d2003V] and PyCBC Inference paper [][#Biwer:2018osg].
+
 
 ### Rules of probability ###
 
@@ -100,7 +103,7 @@ From these axioms we can derive:
 * The **(Extended) Sum Rule**
     * $P(A\text{ or }B) = P(A) + P(B) - P(A\text{ and }B)$
 * The **Product Rule**
-    * $P(A\text{ and }B) = P(A)P(B|A) = P(B)P(A|B)$
+    * $P(A\text{ and }B) \equiv p(A,B) = P(A)P(B|A) = P(B)P(A|B)$, where $P(x|y)$ is the probability that $x$ is true given $y$ is true. 
 
 These rules apply to probabilities $P$ and also probability density functions (pdfs) $p$.
 
@@ -146,7 +149,7 @@ how to update our degree of belief about our model based on new data.
 Evidence } } } }
 \\]
 
-We can calculate the these terms (e.g., analytically or numerically on a computer). 
+We can often calculate the these terms (e.g., analytically or numerically on a computer). 
 
 
 ### Bayes' theorem ###
@@ -159,12 +162,190 @@ for the posterior)
 * **Posterior**: our new degree of belief about our model in light of the data
 
 
+### A Bayesian example: is a coin fair? ###
+
+How can we determine if a coin is fair[^fnsvia]? We can consider a large number of contiguous propositions over
+the range in which the bias weighting $H$ of the coin might lie:
+
+* $H = 0$ coin produces a tail every time
+* $H = 1$ coin produces a head every time
+* $H = 0.5$ is a 'fair' coin with 50:50 chance of head or tail
+* continuum of probabilities $0 \le H \le 1$
+
+Given some data (an observed number of coin tosses) we can assess how much we believe each of
+these propositions (e.g. $0 \le H < 0.01$, $0.01 \le H < 0.02$, and so on) to be true, e.g.
+\\[
+\text{Prob}(0 \le H < 0.01|d)
+\\]
+
+[^fnsvia]: See e.g. Chap. 2 of Sivia[][#Sivia].
+
+
+### A Bayesian example: is a coin fair? ###
+
+In the limiting case where our propositions each lie in the infinitesimal range ${\rm d}H$ 
+our inference about the bias weighting is summarised by the pdf for the conditional probability
+$p(H|d,I)$, i.e. the _posterior_. We can use Bayes' theorem to calculate it.
+
+For coin flips, assuming that they are independent events, the probability of obtaining `$r$ heads in
+$n$ tosses' is given by the binomial distribution, so our _likelihood_ is:
+\\[
+p(d|H,I) \propto H^r(1-H)^{n-r}
+\\]
+But, what should we use as our _prior_?
+
+
+### A Bayesian example: is a coin fair? ###
+
+But, what should we use as our _prior_?
+
+Assuming we have no knowledge about the provenance of the coin, or the person tossing it, and want to
+reflect total ignorance of the possible bias, then a simple probability reflecting this is a **uniform**,
+or **flat**, pdf:
+\\[
+p(H|I) =
+\begin{cases}
+1, \text{if } 0 \le H \le 1, \\
+0, \text{otherwise}.
+\end{cases}
+\\]
+Using these we can calculate our posterior, $p(H|d,I)$, as we obtain more data (counting $r$ as the
+number of coin tosses, $n$, increases).
+
+
+### A Bayesian example: is a coin fair? ###
+
+![][coin_toss]
+
+[coin_toss]: figures/coin_toss.pdf "Coin toss example" height="210px"
+
+
+### A Bayesian example: is a coin fair? ###
+
+<!--\begin{columns}
+    \begin{column}{0.35\textwidth}-->
+As the number of coin tosses increases the posterior evolves from the uniform prior to a tight range in $H$
+with the most probable value being $H=0.3$.
+<!--\end{column}
+\begin{column}{0.65\textwidth}-->
+![][coin_toss]
+<!--\end{column}
+\end{columns}-->
+
+
+### A Bayesian example: is a coin fair? ###
+
+What about a _different_ prior?
+
+We know that coins are generally fair, so what if we assume this one is too? 
+
+We can assign a Gaussian prior distribution that focusses the probability around the
+expected 'fair coin' value
+\\[
+p(H|I) \propto \exp{\left(-\frac{1}{2}\frac{(H-\mu_H)^2}{\sigma_H^2}\right)},
+\\]
+with $\sigma_H = 0.05$ and $\mu_H = 0.5$.
+
+
+### A Bayesian example: is a coin fair? ###
+
+![][coin_toss_2]
+
+[coin_toss_2]: figures/coin_toss_2.pdf "Coin toss another example" height="210px"
+
+
+### A Bayesian example ###
+
+What do we learn from this?
+
+* As our data improve (i.e. we gather more samples), the posterior pdf narrows and becomes
+less sensitive to our choice of prior (i.e. the likelihood starts to dominate)
+* The posterior conveys our (evolving) degree of belief in different values of $H$ given our
+data
+* If we want to express our belief as a **single number** we can adopt e.g. the mean, median or mode
+* It is very straightforward to define _Bayesian confidence intervals_ (more correctly termed
+**credible intervals**), to quantify our uncertainty on $H$.
+
+
+### Bayesian credible interval ###
+
+We define a **credible interval** $[\theta_a, \theta_b]$ as a (_non-unique_) range that a
+contains a certain amount of posterior probability, $X$,
+\\[
+X = \int_{\theta_a}^{\theta_b} p(\theta|d,I) {\rm d}\theta.
+\\]
+If $X=0.95$ then we can find $[\theta_a, \theta_b]$ that e.g. gives the minimum range containing
+95% of the probability.
+
+The meaning of this is simple: _we are 95% sure that $\theta$ lies between $\theta_a$ and $\theta_b$._
+
+This is just based on the data at hand and requires no assumptions about a frequency of measuring a
+statistic over multiple trials.
+
+
+### The Gaussian/Normal Likelihood ###
+
+In many situations in physics/astronomy our data consists of the signal with some additive noise, e.g. considering a single data point
+
+\\[
+d_1 = s_1 + n_1.
+\\]
+
+We are interested in the _inverse problem_ of inferring the properties of the signal given the data.
+To do this, and define a likelihood, we need to make sum assumptions about the noise.
+
+
+### The Gaussian/Normal likelihood ###
+
+If the noise generating process can be thought of as the sum of independent random processes then by the
+<!--\href{https://en.wikipedia.org/wiki/Central_limit_theorem}{\it central limit theorem}--> it will tend
+towards a <!--\href{https://en.wikipedia.org/wiki/Normal_distribution}{\it normal distribution}-->. So, we
+often assume $n \sim N(0, \sigma^2)$ ("_$n$ is drawn from a Normal distribution with mean of zero and
+variance $\sigma^2$_")
+
+Also, for a process were we have the expectation value $\mu$ and variance $\sigma^2$, the distribution
+that <!--\href{https://en.wikipedia.org/wiki/Maximum_entropy_probability_distribution\#Specified_variance:_the_normal_distribution}{maximises the entropy}-->, is the least informative (most conservative), is the normal distribution:
+
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+p(x|\mu,\sigma,I) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp{\left(-\frac{(x-\mu)^2}{2\sigma^2} \right)}
+\end{empheq}-->
+
+
+### The Gaussian/Normal likelihood ###
+
+For our data $d_1 = s_1 + n_1$, if we have a model of our signal parameterised by $\vec{\theta}$, such that
+$s_1 \equiv s_1(\vec{\theta})$, then due to the additive nature of the noise and signal, the expectation value
+$\mu = s_1(\vec{\theta})$, and we have:
+
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+p(d_1|\vec{\theta},\sigma,I) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp{\left(-\frac{\left(d_1-s_1(\vec{\theta})\right)^2}{2\sigma^2} \right)}
+\end{empheq}-->
+
+
+### The joint likelihood ###
+
+Often we have more than one data point! If the noise in the data is <!--\href{https://en.wikipedia.org/wiki/Independent_and_identically_distributed_random_variables}{\it independent and identically distributed}--> (_i.i.d._)
+you can just multiply the likelihoods for each data point for for the _joint_ likelihood for all the data
+$\mathbf{d} = \{d_1, d_2, \dots, d_N\}$:
+
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{align*}
+p(\mathbf{d}|\vec{\theta},\sigma,I) &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}\exp{\left(-\frac{\left(d_i-s_i(\vec{\theta})\right)^2}{2\sigma^2} \right)}, \nonumber \\
+&= \left(2\pi\sigma^2\right)^{-n/2}\exp{\left(-\frac{1}{2}\sum_{i=1}^n\frac{\left(d_i-s_i(\vec{\theta})\right)^2}{\sigma^2} \right)}
+\end{empheq}-->
+
+
+
+### Inference for gravitational-wave astronomy ###
+
+Gravitational wave detectors produce a time series of strain measurement $h(t)$ ("_$h$ of $t$_")
+
+
 ### Anatomy of the GW likelihood function ###
 
 We've seen the "standard" Gaussian likelihood function, but in GW papers you
 might (see, e.g., Equations 3 and 4 of [][#Biwer:2018osg], assuming a single detector,
 and ignoring the normalisation):
-<!--\begin{empheq}[box={\borderedmathbox[scale=0.6]}]{align*}
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.6, left=10mm, right=10mm]}]{align*}
 p(d|\vec{\theta}, I) \propto&  \exp{\left(-\frac{1}{2} \redob{\langle \tilde{d}(f) - \tilde{s}(f;\vec{\theta}) | \tilde{d}(f) - \tilde{s}(f;\vec{\theta}) \rangle}^{\mathclap{\text{noise weighted innner product}}}\right)} \nonumber \\
 \equiv & \exp{\left(-\frac{1}{2} \left[ 4\Re \int_0^\infty \frac{\left(\tilde{d}(f) - \tilde{s}(f;\vec{\theta})\right)\left(\tilde{d}(f) - \tilde{s}(f;\vec{\theta})\right)^*}{S_n} {\rm d}f \right]\right)},
 \end{empheq}-->
@@ -186,6 +367,62 @@ p(d|\vec{\theta}, I) = \exp{\left(-\frac{1}{2} \left[ 4\Re \textcolor{red}{\sum_
 \end{empheq}-->
 due to $\int \dots {\rm d}f \approx \sum \dots \Delta f$, and $\Delta f = 1/T$ for data of length $T$ seconds,
 and $i$ in the index over frequency bins from bin $j$ to $k$.
+
+
+### The power spectral density ###
+
+
+### Gravitational wave parameters ###
+
+CBC signals are defined by 15 intrinsic parameters (only 9 for a non-spinning system):
+
+<!--\scalebox{0.8}{\begin{columns}[T]
+\begin{column}{0.5\textwidth}-->
+
+Spinning/non-spinning:
+
+ * component masses ($m_i$ where $m_1 > m_2$)
+ * a reference time, e.g., the coalescence time $t_c$
+ * the orbital phase at $t_c$, $\phi_c$
+ * sky position (right ascension $\alpha$ and declination $\delta$)
+ * luminosity distance $d_L$
+ * polarisation angle $\psi$
+
+<!--\end{column}
+\begin{column}{0.5\textwidth}-->
+
+Spinning sources:
+
+ * dimensionless spin magnitudes $a_i = |\vec{s}_i| c / G m_i^2$ where $\vec{s}_i$ is the spin vector.
+ * two angles defining $\vec{s}_i$ specifying the orientation with respect to the plane defined by the line of sight and the initial orbital angular momentum.
+ 
+<!--\end{column}
+\end{columns}}-->
+
+
+### Gravitational wave parameters ###
+
+
+You're free to choose whatever priors you want, but commonly we use priors that are (see [][#2015PhRvD..91d2003V]):
+
+<!--\begin{columns}\begin{column}{0.6\textwidth} -->
+ * <!-- {\scriptsize uniform in component masses with the constraints that $m_1 > m_2$ and $m_1 + m_2 < M_{\rm max}$}-->
+ * <!-- {\scriptsize isotropic in orientation of the binary and sky position, so:}-->
+    * <!-- {\scriptsize $p(\iota, \psi, \phi_c) \propto \sin{\iota}$, and}-->
+    * <!-- {\scriptsize $p(\alpha, \delta) \propto \sin{\delta}$}-->
+ * <!-- {\scriptsize uniform in volume (for the local universe), so $p(d_L) \propto d_L^2$ (from $p(d_L) = p(V)\left|\frac{{\rm d}V}{{\rm d}d_L}\right|)$, with $p(V) \propto 1$ and $V \propto d_L^3$).}-->
+
+<!--\end{column}\begin{column}{0.4\textwidth}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[keepaspectratio, width=\textwidth]{figures/massprior.png}
+\caption*{{\tiny Example of uniform mass prior from \cite{2015PhRvD..91d2003V}}.}
+\label{massprior}
+\end{figure}
+
+\end{column}\end{columns}-->
+
 
 <!--% Bibliography slide -->
 ### Bibliography ###
