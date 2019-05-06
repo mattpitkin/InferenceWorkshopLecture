@@ -21,14 +21,14 @@ latex footer:	mmd-beamer-footer
 ### Overview ###
 
 * Introduction
-  * Rules of probability
-  * Bayes' theorem
+    * Rules of probability
+    * Bayes' theorem
 * Gravitational-wave inference
-  * the likelihood function
-  * the priors
-  * parameter estimation examples
-  * model selection
-  * hierarchical inference
+    * the likelihood function
+    * the priors
+    * parameter estimation examples
+    * model selection
+    * hierarchical inference
 
 
 ### Introduction ###
@@ -296,19 +296,19 @@ d_1 = s_1 + n_1.
 \\]
 
 We are interested in the _inverse problem_ of inferring the properties of the signal given the data.
-To do this, and define a likelihood, we need to make sum assumptions about the noise.
+To do this, and define a likelihood, we need to make some assumptions about the noise properties.
 
 
 ### The Gaussian/Normal likelihood ###
 
 If the noise generating process can be thought of as the sum of independent random processes then by the
 <!--\href{https://en.wikipedia.org/wiki/Central_limit_theorem}{\it central limit theorem}--> it will tend
-towards a <!--\href{https://en.wikipedia.org/wiki/Normal_distribution}{\it normal distribution}-->. So, we
+towards a <!--\href{https://en.wikipedia.org/wiki/Normal_distribution}{\it \color{violet}{normal distribution}}-->. So, we
 often assume $n \sim N(0, \sigma^2)$ ("_$n$ is drawn from a Normal distribution with mean of zero and
 variance $\sigma^2$_")
 
-Also, for a process were we have the expectation value $\mu$ and variance $\sigma^2$, the distribution
-that <!--\href{https://en.wikipedia.org/wiki/Maximum_entropy_probability_distribution\#Specified_variance:_the_normal_distribution}{maximises the entropy}-->, is the least informative (most conservative), is the normal distribution:
+Also, for a process where we have the expectation value $\mu$ and variance $\sigma^2$, the distribution
+that <!--\href{https://en.wikipedia.org/wiki/Maximum\_entropy\_probability\_distribution\#Specified\_variance:\_the\_normal\_distribution}{maximises the entropy}-->, is the least informative (most conservative), is the normal distribution:
 
 <!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
 p(x|\mu,\sigma,I) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp{\left(-\frac{(x-\mu)^2}{2\sigma^2} \right)}
@@ -317,7 +317,7 @@ p(x|\mu,\sigma,I) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp{\left(-\frac{(x-\mu)^2}{2\
 
 ### The Gaussian/Normal likelihood ###
 
-For our data $d_1 = s_1 + n_1$, if we have a model of our signal parameterised by $\vec{\theta}$, such that
+For our single point of data $d_1 = s_1 + n_1$, if we have a model of our signal parameterised by $\vec{\theta}$, such that
 $s_1 \equiv s_1(\vec{\theta})$, then due to the additive nature of the noise and signal, the expectation value
 $\mu = s_1(\vec{\theta})$, and we have:
 
@@ -328,20 +328,21 @@ p(d_1|\vec{\theta},\sigma,I) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp{\left(-\frac{\l
 
 ### The joint likelihood ###
 
-Often we have more than one data point! If the noise in the data is <!--\href{https://en.wikipedia.org/wiki/Independent_and_identically_distributed_random_variables}{\it independent and identically distributed}--> (_i.i.d._)
+Often we have more than one data point! If the noise in the data is <!--\href{https://en.wikipedia.org/wiki/Independent\_and\_identically\_distributed\_random\_variables}{\it \color{violet}{independent and identically distributed}}--> (_i.i.d._)
 you can just multiply the likelihoods for each data point for for the _joint_ likelihood for all the data
 $\mathbf{d} = \{d_1, d_2, \dots, d_N\}$:
 
 <!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{align*}
-p(\mathbf{d}|\vec{\theta},\sigma,I) &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}\exp{\left(-\frac{\left(d_i-s_i(\vec{\theta})\right)^2}{2\sigma^2} \right)}, \nonumber \\
-&= \left(2\pi\sigma^2\right)^{-n/2}\exp{\left(-\frac{1}{2}\sum_{i=1}^n\frac{\left(d_i-s_i(\vec{\theta})\right)^2}{\sigma^2} \right)}
+p(\mathbf{d}|\vec{\theta},\sigma,I) &= \prod_{i=1}^N \frac{1}{\sqrt{2\pi\sigma^2}}\exp{\left(-\frac{\left(d_i-s_i(\vec{\theta})\right)^2}{2\sigma^2} \right)}, \nonumber \\
+&= \left(2\pi\sigma^2\right)^{-N/2}\exp{\left(-\frac{1}{2}\sum_{i=1}^N\frac{\left(d_i-s_i(\vec{\theta})\right)^2}{\sigma^2} \right)}
 \end{empheq}-->
 
+This is a <!--\href{https://en.wikipedia.org/wiki/Stationary\_process}{\it strictly (or strongly) \color{violet}{stationary process}}-->.
 
 ### The joint likelihood: non-_i.i.d._ ###
 
 If the noise process for points is Gaussian, but the noise is _not_
-correlated, i.e., each point (or a subset of points) has a different _known_ variance $\bm{\sigma} = \{\sigma_1, \dots, \sigma_n\}$, we have:
+correlated, i.e., each point (or a subset of points) has a different _known_ variance $\bm{\sigma} = \{\sigma_1, \dots, \sigma_N\}$, we have:
 
 <!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
 p(\mathbf{d}|\vec{\theta},\bm{\sigma},I) = \left(\prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma_i^2}}\right)\exp{\left(-\frac{\left(d_i-s_i(\vec{\theta})\right)^2}{2\sigma_i^2} \right)}.
@@ -351,15 +352,37 @@ p(\mathbf{d}|\vec{\theta},\bm{\sigma},I) = \left(\prod_{i=1}^n \frac{1}{\sqrt{2\
 ### The joint likelihood: non-_i.i.d._ ###
 
 If the noise process for points is Gaussian, but the noise is
-correlated, but the covariance matrix $\bm{\Sigma}$ is known, we have a <!-- \href{https://en.wikipedia.org/wiki/Multivariate\_normal\_distribution}{\it multivariate normal distribution}-->:
+correlated and can be defined by a known (or estimatable) covariance matrix $\bm{\Sigma}$ (a <!--\href{https://en.wikipedia.org/wiki/Stationary\_process\#Weak\_or\_wide-sense_stationarity}{\it \color{violet}{weakly stationary} process}-->), we have a <!-- \href{https://en.wikipedia.org/wiki/Multivariate\_normal\_distribution}{\it multivariate normal distribution}-->:
 
 <!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
 p(\mathbf{d}|\vec{\theta}, \bm{\Sigma}, I) = \left(2\pi\right)^{n/2}\left|\bm{\Sigma}\right|^{-1/2}\exp{\left(-\frac{1}{2}\left(\mathbf{d} - \mathbf{s}(\vec{\theta})\right)'\bm{\Sigma}^{-1}\left(\mathbf{d} - \mathbf{s}(\vec{\theta})\right)\right)},
 \end{empheq}-->
 
-where $\mathbf{s}(\vec{\theta}) = \{s_1(\vec{\theta)}, \dots, s_n(\vec{\theta)}\}$. This becomes the previous case if $\bm{\Sigma}$ is diagonal.
+where $\mathbf{s}(\vec{\theta}) = \{s_1(\vec{\theta)}, \dots, s_N(\vec{\theta)}\}$. This becomes the previous case if $\bm{\Sigma}$ is diagonal.
 
-The covariance is ...
+
+### Estimating the covariance matrix ###
+
+The covariance matrix can be estimated by finding the
+<!--\href{https://en.wikipedia.org/wiki/Autocovariance}{\it \color{violet}{autocovariance}}--> of the noise (ideally you
+some data that is purely from from the noise process, i.e., contains not signal). If we assume $N$
+evenly sampled noise data points $\bm{n}$, then the autocovariance is:
+
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+\gamma_j = \frac{1}{N-1}\sum_{i=0}^{N-j} \left(n_{i+j} - \bar{\bm{n}}\right) \left(n_{i+1} - \bar{\bm{n}}\right),
+\end{empheq}-->
+
+with $j$ indices starting at 1, and $\bar{\bm{n}} = (1/N)\sum_{i=1}^N n_i$. This could be estimated on $M$ multiple stretches of data and averaged, e.g., $\bar{\gamma}_j = (1/M) \sum_{i=1}^M \gamma_{ij}$.
+
+
+### Estimating the covariance matrix ###
+
+The <!--\href{https://en.wikipedia.org/wiki/Autocorrelation}{\it \color{violet}{autocorrelation function}}--> is then defined as
+
+<!-- \begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+\rho_j = \frac{\gamma_j}{\gamma_1}.
+\end{empheq}
+-->
 
 
 ### Inference for gravitational-wave astronomy ###
