@@ -21,8 +21,8 @@ latex footer:	mmd-beamer-footer
 ### Overview ###
 
 * Introduction
-    * Rules of probability
     * Bayes' theorem
+    * Marginalisation
 * Gravitational-wave inference
     * the likelihood function
     * the priors
@@ -55,73 +55,10 @@ recommend are:
 
 ### Papers to read ###
 
-LALInference paper [][#2015PhRvD..91d2003V] and PyCBC Inference paper [][#Biwer:2018osg].
+Some useful papers to read are:
 
-
-### Rules of probability ###
-
-The rules for probabilities of propositions are inherited from classical logic and Boolean algebra:
-
-* _Law of Excluded Middle_ $P(A\text{ or not}(A)) = 1$
-* _Law of Non-contradiction_ $P(A\text{ and not}(A)) = 0$
-    * i.e. $P(A) + P(\text{not }A) = 1$ (the **sum rule**)
-* _Association_
-    * $P(A,[B,C]) = P([A,B],C)$
-    * $P(A \text{ or } [B \text{ or }C]) = P([A \text{ or } B] \text{ or }C)$
-* _Distribution_
-    * $P(A,[B\text{ or }C]) = P(A,B\text{ or }A,C)$
-    * $P(A\text{ or }[B,C]) = P([A\text{ or }B],[A\text{ or }C])$
-
-
-### Rules of probability ###
-
-* _Commutation_
-    * $P(A,B) = P(B,A)$
-    * $P(A \text{ or } B) = P(B \text{ or } A)$
-* _Duality_ (De Morgan's Theorem)
-    * $P(\text{not }[A,B]) = P(\text{not}(A) \text{ or } \text{not}(B))$
-    * $P(\text{not }[A\text{ or }B]) = P(\text{not}(A),\text{not}(B))$
-
-
-### Rules of probability ###
-
-Note that you may see other notation for probabilities expressed with Boolean logic (this list is 
-not exhaustive)
-
-* Negation ($A$ is false)
-    * $P(\text{not }A)$, or $P(\bar{A})$, or $P(\lnot A)$
-* Logical product (both A _and_ B are true)
-    * $P(A,B)$, or $P(AB)$, or $P(A\text{ and }B)$, or $P(A\land B)$
-* Logical sum (at least one of A _or_ B is true)
-    * $P(A+B)$, or $P(A\text{ or }B)$, or $P(A\lor B)$
-
-
-### Rules of probability ###
-    
-From these axioms we can derive:
-
-* The **(Extended) Sum Rule**
-    * $P(A\text{ or }B) = P(A) + P(B) - P(A\text{ and }B)$
-* The **Product Rule**
-    * $P(A\text{ and }B) \equiv p(A,B) = P(A)P(B|A) = P(B)P(A|B)$, where $P(x|y)$ is the probability that $x$ is true given $y$ is true. 
-
-These rules apply to probabilities $P$ and also probability density functions (pdfs) $p$.
-
-
-### Rules of probability ###
-
-_Simple demonstration of the extended sum rule._
-
-What is the probability that a card drawn from a standard deck of cards is a spade _or_ an ace?
-
-We have $P(\spadesuit) = 13/52 = 1/4$ and $P(\text{ace}) = 4/52 = 1/13$, and $P(\spadesuit\text{ 
-and ace}) = 1/(4\times 13) = 1/52$. It is reasonably obvious that for $P(\spadesuit\text{ or ace})$ 
-we want to sum the probabilities for both cases, however they both contain the case where 
-$P(\spadesuit\text{ and ace})$, so we have to remove one of those instances
-
-\\[
-P(\spadesuit\text{ or ace}) = \frac{13 + 4 - 1}{52} = \frac{16}{52}
-\\]
+* The ``LALInference`` paper <!--\citep{2015PhRvD..91d2003V}-->
+* The <!--\textsc{PyCBC Inference} paper \citep{Biwer:2018osg}-->.
 
 
 ### Bayes' theorem ###
@@ -131,7 +68,7 @@ From the product rule comes
     P(B|A,I) = \frac{P(A|B,I)P(B|I)}{P(A|I)}.
 \end{empheq}-->
 
-This is <!--{\color{red} {\bf Bayes' theorem}}-->.
+This is <!--\href{https://en.wikipedia.org/wiki/Bayes\%27\_theorem}{{\color{violet}{\bf Bayes' theorem}}}-->.
 
 From now on we will stick to using $P(A,B|I)$ to denoted the 
 probability of $A$ _and_ $B$, where we have also explicitly added the conditioning on background 
@@ -178,7 +115,7 @@ these propositions (e.g. $0 \le H < 0.01$, $0.01 \le H < 0.02$, and so on) to be
 \text{Prob}(0 \le H < 0.01|d)
 \\]
 
-[^fnsvia]: See e.g. Chap. 2 of Sivia[][#Sivia].
+[^fnsvia]: See e.g. Chap. 2 of <!--\citet{Sivia}-->.
 
 
 ### A Bayesian example: is a coin fair? ###
@@ -271,9 +208,19 @@ data
 **credible intervals**), to quantify our uncertainty on $H$.
 
 
+### Marginalisation ###
+
+* analytically
+* numerically
+* stochastic sampling
+
+
+### Evidence calculation ###
+
+
 ### Bayesian credible interval ###
 
-We define a **credible interval** $[\theta_a, \theta_b]$ as a (_non-unique_) range that a
+We define a <!--\href{https://en.wikipedia.org/wiki/Credible\_interval}{\color{violet}{\bf credible interval}}--> $[\theta_a, \theta_b]$ as a (_non-unique_) range that a
 contains a certain amount of posterior probability, $X$,
 \\[
 X = \int_{\theta_a}^{\theta_b} p(\theta|d,I) {\rm d}\theta.
@@ -290,11 +237,9 @@ statistic over multiple trials.
 ### The Gaussian/Normal Likelihood ###
 
 In many situations in physics/astronomy our data consists of the signal with some additive noise, e.g. considering a single data point
-
 \\[
 d_1 = s_1 + n_1.
 \\]
-
 We are interested in the _inverse problem_ of inferring the properties of the signal given the data.
 To do this, and define a likelihood, we need to make some assumptions about the noise properties.
 
@@ -303,13 +248,12 @@ To do this, and define a likelihood, we need to make some assumptions about the 
 
 If the noise generating process can be thought of as the sum of independent random processes then by the
 <!--\href{https://en.wikipedia.org/wiki/Central_limit_theorem}{\it central limit theorem}--> it will tend
-towards a <!--\href{https://en.wikipedia.org/wiki/Normal_distribution}{\it \color{violet}{normal distribution}}-->. So, we
+towards a <!--\href{https://en.wikipedia.org/wiki/Normal_distribution}{\textbf{\color{violet}{normal (or Gaussian) distribution}}}-->. So, we
 often assume $n \sim N(0, \sigma^2)$ ("_$n$ is drawn from a Normal distribution with mean of zero and
 variance $\sigma^2$_")
 
 Also, for a process where we have the expectation value $\mu$ and variance $\sigma^2$, the distribution
 that <!--\href{https://en.wikipedia.org/wiki/Maximum\_entropy\_probability\_distribution\#Specified\_variance:\_the\_normal\_distribution}{maximises the entropy}-->, is the least informative (most conservative), is the normal distribution:
-
 <!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
 p(x|\mu,\sigma,I) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp{\left(-\frac{(x-\mu)^2}{2\sigma^2} \right)}
 \end{empheq}-->
@@ -320,7 +264,6 @@ p(x|\mu,\sigma,I) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp{\left(-\frac{(x-\mu)^2}{2\
 For our single point of data $d_1 = s_1 + n_1$, if we have a model of our signal parameterised by $\vec{\theta}$, such that
 $s_1 \equiv s_1(\vec{\theta})$, then due to the additive nature of the noise and signal, the expectation value
 $\mu = s_1(\vec{\theta})$, and we have:
-
 <!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
 p(d_1|\vec{\theta},\sigma,I) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp{\left(-\frac{\left(d_1-s_1(\vec{\theta})\right)^2}{2\sigma^2} \right)}
 \end{empheq}-->
@@ -328,22 +271,21 @@ p(d_1|\vec{\theta},\sigma,I) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp{\left(-\frac{\l
 
 ### The joint likelihood ###
 
-Often we have more than one data point! If the noise in the data is <!--\href{https://en.wikipedia.org/wiki/Independent\_and\_identically\_distributed\_random\_variables}{\it \color{violet}{independent and identically distributed}}--> (_i.i.d._)
-you can just multiply the likelihoods for each data point for for the _joint_ likelihood for all the data
+Often we have more than one data point! If the noise in the data is <!--\href{https://en.wikipedia.org/wiki/Independent\_and\_identically\_distributed\_random\_variables}{\bf \color{violet}{independent and identically distributed}}--> (_i.i.d._)
+you can multiply the likelihoods for each data point to give the _joint_ likelihood for all the data
 $\mathbf{d} = \{d_1, d_2, \dots, d_N\}$:
-
 <!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{align*}
 p(\mathbf{d}|\vec{\theta},\sigma,I) &= \prod_{i=1}^N \frac{1}{\sqrt{2\pi\sigma^2}}\exp{\left(-\frac{\left(d_i-s_i(\vec{\theta})\right)^2}{2\sigma^2} \right)}, \nonumber \\
 &= \left(2\pi\sigma^2\right)^{-N/2}\exp{\left(-\frac{1}{2}\sum_{i=1}^N\frac{\left(d_i-s_i(\vec{\theta})\right)^2}{\sigma^2} \right)}
 \end{empheq}-->
 
-This is a <!--\href{https://en.wikipedia.org/wiki/Stationary\_process}{\it strictly (or strongly) \color{violet}{stationary process}}-->.
+This is a <!--\href{https://en.wikipedia.org/wiki/Stationary\_process}{strictly (or strongly) \color{violet}{\bf stationary process}}-->.
+
 
 ### The joint likelihood: non-_i.i.d._ ###
 
-If the noise process for points is Gaussian, but the noise is _not_
+If the noise process is Gaussian, but the noise is _not_
 correlated, i.e., each point (or a subset of points) has a different _known_ variance $\bm{\sigma} = \{\sigma_1, \dots, \sigma_N\}$, we have:
-
 <!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
 p(\mathbf{d}|\vec{\theta},\bm{\sigma},I) = \left(\prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma_i^2}}\right)\exp{\left(-\frac{\left(d_i-s_i(\vec{\theta})\right)^2}{2\sigma_i^2} \right)}.
 \end{empheq}-->
@@ -351,43 +293,153 @@ p(\mathbf{d}|\vec{\theta},\bm{\sigma},I) = \left(\prod_{i=1}^n \frac{1}{\sqrt{2\
 
 ### The joint likelihood: non-_i.i.d._ ###
 
-If the noise process for points is Gaussian, but the noise is
-correlated and can be defined by a known (or estimatable) covariance matrix $\bm{\Sigma}$ (a <!--\href{https://en.wikipedia.org/wiki/Stationary\_process\#Weak\_or\_wide-sense_stationarity}{\it \color{violet}{weakly stationary} process}-->), we have a <!-- \href{https://en.wikipedia.org/wiki/Multivariate\_normal\_distribution}{\it multivariate normal distribution}-->:
-
+If the noise process is Gaussian, but the noise is
+correlated and can be defined by a known (or estimatable) covariance matrix $\bm{\Sigma}$ (a <!--\href{https://en.wikipedia.org/wiki/Stationary\_process\#Weak\_or\_wide-sense_stationarity}{\color{violet}{\bf weakly stationary} process}-->), we have a <!-- \href{https://en.wikipedia.org/wiki/Multivariate\_normal\_distribution}{\it multivariate normal distribution}-->:
 <!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
 p(\mathbf{d}|\vec{\theta}, \bm{\Sigma}, I) = \left(2\pi\right)^{n/2}\left|\bm{\Sigma}\right|^{-1/2}\exp{\left(-\frac{1}{2}\left(\mathbf{d} - \mathbf{s}(\vec{\theta})\right)'\bm{\Sigma}^{-1}\left(\mathbf{d} - \mathbf{s}(\vec{\theta})\right)\right)},
 \end{empheq}-->
-
 where $\mathbf{s}(\vec{\theta}) = \{s_1(\vec{\theta)}, \dots, s_N(\vec{\theta)}\}$. This becomes the previous case if $\bm{\Sigma}$ is diagonal.
 
 
 ### Estimating the covariance matrix ###
 
 The covariance matrix can be estimated by finding the
-<!--\href{https://en.wikipedia.org/wiki/Autocovariance}{\it \color{violet}{autocovariance}}--> of the noise (ideally you
-some data that is purely from from the noise process, i.e., contains not signal). If we assume $N$
+<!--\href{https://en.wikipedia.org/wiki/Autocovariance}{\textbf{\color{violet}{autocovariance}}}--> of the noise (ideally from
+some data that is drawn purely from the noise process, i.e., contains not signal). If we assume $N$
 evenly sampled noise data points $\bm{n}$, then the autocovariance is:
-
 <!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
 \gamma_j = \frac{1}{N-1}\sum_{i=0}^{N-j} \left(n_{i+j} - \bar{\bm{n}}\right) \left(n_{i+1} - \bar{\bm{n}}\right),
 \end{empheq}-->
-
-with $j$ indices starting at 1, and $\bar{\bm{n}} = (1/N)\sum_{i=1}^N n_i$. This could be estimated on $M$ multiple stretches of data and averaged, e.g., $\bar{\gamma}_j = (1/M) \sum_{i=1}^M \gamma_{ij}$.
+with $j$ indices starting at 1, and $\bar{\bm{n}} = (1/N)\sum_{i=1}^N n_i$. This could be estimated from $M$ multiple stretches of data and averaged, e.g., $\bar{\gamma}_j = (1/M) \sum_{i=1}^M \gamma_{ij}$.
 
 
 ### Estimating the covariance matrix ###
 
-The <!--\href{https://en.wikipedia.org/wiki/Autocorrelation}{\it \color{violet}{autocorrelation function}}--> is then defined as
-
+The <!--\href{https://en.wikipedia.org/wiki/Autocorrelation}{\textbf{\color{violet}{autocorrelation function}}}--> is then defined as $\rho_j = \frac{\gamma_j}{\gamma_1}$ and, setting $\gamma_1 \equiv \sigma^2$, the covariance matrix is:
 <!-- \begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
-\rho_j = \frac{\gamma_j}{\gamma_1}.
+\bm{\Sigma} = \sigma^2\left(\begin{array}{ccccc}
+1      & \rho_2 & \rho_3 & \cdots & \rho_n \\
+\rho_2 & 1      & \rho_2 & \cdots & \rho_{n-1} \\
+\rho_3 & \rho_2 & 1      & \ddots & \vdots \\
+\vdots & \vdots & \ddots & \ddots & \rho_2 \\
+\rho_n & \rho_{n-1} & \cdots & \rho_2 & 1
+\end{array} \right).
 \end{empheq}
 -->
+
+### Example: fitting a line ###
+
+As an example, we'll examine the problem of fitting a line $y = mx+c$ to data, $d$ (<!--\href{https://en.wikipedia.org/wiki/Linear_regression}{\color{violet}{\bf linear regression}}-->). We can write the posterior for
+the parameters
+\\[
+p(m,c|d,I) \propto \redub{p(d|m,c,I)}_{\mathclap{\text{Likelihood}}} \times \redub{p(m,c|I)}_{\mathclap{\text{Prior}}}.
+\\]
+If the prior on the parameters is uniform and independent, so
+\\[
+p(m,c|I) = p(m|I)p(c|I) = \text{constant},
+\\]
+then the posterior is
+\\[
+p(m,c|d,I) \propto p(d|m,c,I)
+\\]
+and we can use the machinery of maximum likelihood to estimate the parameters (i.e. maximum
+likelihood can be derived from Bayesian reasoning with certain priors).
+
+
+### Example: fitting a line ###
+
+However, we will use this to show to general concept of fitting any (even _non-linear_) model. If
+the likelihood is Gaussian, with known values of $\sigma_i$, then
+\\[
+p(m,c|d,I) = p(m,c|I)\left(\frac{1}{2\pi \sigma_i^2}\right)^{n/2}\exp{\left(-\sum_{i=1}^n\frac{[d_i-(m x_i + c)]^2}{2\sigma_i^2}\right)}
+\\]
+and we can evaluate the posterior over a grid in the parameters $m$ and $c$.
+
+We can also compute the marginal posteriors on $m$ and $c$ as, e.g.
+\\[
+p(m|d,I) = \int_{-\infty}^{\infty} p(m,c|d,I) {\rm d}c.
+\\]
+
+
+### Example: fitting a line ###
+
+![][bayesian_line_fitting]
+
+[bayesian_line_fitting]: figures/bayesian_line_fitting.pdf "Bayesian line fitting example" height="210px"
+
+
+### Example: fitting a line ###
+
+In the above example, in practice, when $p(m,c|I) = \text{constant}$ and $\sigma_i = \sigma$ are constant, we can just calculate the posterior[^fnlogspace] over a grid in $m$ and $c$
+\\[
+\ell(m_{i_m},c_{i_c}) = \ln{p(m_{i_m},c_{i_c}|d,I)} = -\sum_{i=1}^n\frac{[d_i-(m_{i_m} x_i + c_{i_c})]^2}{2\sigma^2}
+\\]
+and get the marginal posteriors through numerical integration, e.g.
+\\[
+p(m_{i_m}|d,I) \propto \sum_{i_c}^{n_c} \exp{\left(\ell(m_{i_m},c_{i_c}) - \text{max}\ell(m,c)\right)} \Delta c
+\\]
+where $\Delta c$ are the grid step sizes in $c$ (or you could use the trapezium rule for more accuracy).
+
+[^fnlogspace]: We generally work in natural logarithm space due to numerical precision issues.
+
+
+### Example: fitting a line ###
+
+What if we don't know $\sigma$?
+
+In this case we can treat $\sigma$ as another unknown variable and marginalise over it, e.g.
+\\[
+p(m,c|d,I) = p(m,c|I) \int_0^{\infty} p(d|m,c,\sigma,I)p(\sigma|I) {\rm d}\sigma
+\\]
+If the likelihood is Gaussian and we assume a flat prior on all parameters, e.g.
+\\[
+p(\sigma|I) = \begin{cases}C, \sigma > 0 \\ 0, \sigma \le 0\end{cases}
+\\]
+Then we have
+\\[
+p(m,c|d,I) \propto \int_0^{\infty} \sigma^{-n} \exp{\left(-\sum_{i=1}^n\frac{[d_i-(m x_i + c)]^2}{2\sigma^2}\right)} {\rm d}\sigma
+\\]
+
+
+### Example: fitting a line ###
+
+This integral is analytic, and through some substitution (see e.g. Chap. 3 of Sivia[][#Sivia]), becomes
+\\[
+p(m,c|d,I) \propto \left( \sum_{i=1}^n [d_i-(m x_i + c)]^2 \right)^{-(n-1)/2}
+\\]
+This is essentially a _Student's $t$-distribution_ with $\nu = (n-2)$ degrees of freedom.
+
+Note: if we were instead to use a prior on $\sigma$ of $p(\sigma|I) \propto 1/\sigma$ it would
+lead to a Student's $t$-distribution with $\nu = n-1$ degrees of freedom.
+
+
+### Example: fitting a line ###
+
+![][bayesian_line_fitting_2]
+
+[bayesian_line_fitting_2]: figures/bayesian_line_fitting_2.pdf "Bayesian line fitting example" height="210px"
 
 
 ### Inference for gravitational-wave astronomy ###
 
-Gravitational wave detectors produce a time series of strain measurement $h(t)$ ("_$h$ of $t$_")
+<!--{\scriptsize Gravitational-wave detectors produce a {\it real} time series of strain measurements $h(t)$ (``$h$ {\it of} $t$'').
+This is the linear combination of noise (assumed to be produced by a weakly stationary process, i.e.,
+coloured Gaussian noise) and the signal as projected onto the detector via its response function:}
+\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+h(t) = n(t) + s(t; \bm{\theta}),
+\end{empheq}
+{\scriptsize where}
+\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+s(t; \bm{\theta}) = F_+^D(t; \alpha, \delta, \psi) h_+(t; \bm{\theta}') + F_{\times}^D(t; \alpha, \delta, \psi) h_{\times}(t; \bm{\theta}').
+\end{empheq}-->
+
+<!--{\tiny $F_{+/\times}^D$ are the `plus' and `cross' polarisation responses of detector $D$ to a source at a sky position given by right ascension $\alpha$ and declination $\delta$ and with polarisation angle $\psi$. $h_{+/\times}$ are the source amplitudes at the Earth defined by the parameters $\bm{\theta}'$, where $\bm{\theta} = \{\alpha, \delta, \psi, \bm{\theta}'\}$.}-->
+
+
+### The power spectral density ###
+
+
+### Time domain vs. frequency domain ###
 
 
 ### Anatomy of the GW likelihood function ###
@@ -396,10 +448,10 @@ We've seen the "standard" Gaussian likelihood function, but in GW papers you
 might (see, e.g., Equations 3 and 4 of [][#Biwer:2018osg], assuming a single detector,
 and ignoring the normalisation):
 <!--\begin{empheq}[box={\borderedmathbox[scale=0.6, left=10mm, right=10mm]}]{align*}
-p(d|\vec{\theta}, I) \propto&  \exp{\left(-\frac{1}{2} \redob{\langle \tilde{d}(f) - \tilde{s}(f;\vec{\theta}) | \tilde{d}(f) - \tilde{s}(f;\vec{\theta}) \rangle}^{\mathclap{\text{noise weighted innner product}}}\right)} \nonumber \\
-\equiv & \exp{\left(-\frac{1}{2} \left[ 4\Re \int_0^\infty \frac{\left(\tilde{d}(f) - \tilde{s}(f;\vec{\theta})\right)\left(\tilde{d}(f) - \tilde{s}(f;\vec{\theta})\right)^*}{S_n} {\rm d}f \right]\right)},
+p(\bm{d}|\bm{\theta}, I) \propto&  \exp{\left(-\frac{1}{2} \redob{\langle \tilde{d}(f) - \tilde{s}(f;\bm{\theta}) | \tilde{d}(f) - \tilde{s}(f;\bm{\theta}) \rangle}^{\mathclap{\text{noise weighted innner product}}}\right)} \nonumber \\
+\equiv & \exp{\left(-\frac{1}{2} \left[ 4\Re \int_0^\infty \frac{\left(\tilde{d}(f) - \tilde{s}(f;\bm{\theta})\right)\left(\tilde{d}(f) - \tilde{s}(f;\bm{\theta})\right)^*}{S_n} {\rm d}f \right]\right)},
 \end{empheq}-->
-where $d$ is the data, $\vec{\theta}$ is a set of parameters defining a waveform model $s$, the tilde
+where $d$ is the data, $\bm{\theta}$ is a set of parameters defining a waveform model $s$, the tilde
 represents the Fourier transform, and $S_n$ is the one-sided power spectral density of the noise in the data.
 
 Let's see how this relates to our earlier equation.
@@ -409,22 +461,80 @@ Let's see how this relates to our earlier equation.
 
 First, we actually work with discrete data, and discrete Fourier transforms, so
 <!--\begin{empheq}[box={\borderedmathbox[scale=0.6]}]{equation*}
-p(d|\vec{\theta}, I) = \exp{\left(-\frac{1}{2} \left[ 4\Re \int_0^\infty \frac{\left(\tilde{d}(f) - \tilde{s}(f;\vec{\theta})\right)\left(\tilde{d}(f) - \tilde{s}(f;\vec{\theta})\right)^*}{S_n}(f) {\rm d}f \right]\right)},
+p(\bm{d}|\bm{\theta}, I) \propto \exp{\left(-\frac{1}{2} \left[ 4\Re \int_0^\infty \frac{\left(\tilde{d}(f) - \tilde{s}(f;\bm{\theta})\right)\left(\tilde{d}(f) - \tilde{s}(f;\bm{\theta})\right)^*}{S_n}(f) {\rm d}f \right]\right)},
 \end{empheq}-->
 becomes
 <!--\begin{empheq}[box={\borderedmathbox[scale=0.75]}]{equation*}
-p(d|\vec{\theta}, I) = \exp{\left(-\frac{1}{2} \left[ 4\Re \textcolor{red}{\sum_{i=j}^k} \frac{\left(\tilde{d}_i - \tilde{s}_i(\vec{\theta})\right)\left(\tilde{d}_i - \tilde{s}_i(\vec{\theta})\right)^*}{\textcolor{red}{T} S_n^{(i)}} \right]\right)},
+p(\bm{d}|\bm{\theta}, I) \propto \exp{\left(-\frac{1}{2} \left[ 4\Re \textcolor{red}{\sum_{i=j}^k} \frac{\left(\tilde{d}_i - \tilde{s}_i(\bm{\theta})\right)\left(\tilde{d}_i - \tilde{s}_i(\bm{\theta})\right)^*}{\textcolor{red}{T} S_n^{(i)}} \right]\right)},
 \end{empheq}-->
 due to $\int \dots {\rm d}f \approx \sum \dots \Delta f$, and $\Delta f = 1/T$ for data of length $T$ seconds,
 and $i$ in the index over frequency bins from bin $j$ to $k$.
 
 
-### The power spectral density ###
+### Anatomy of the GW likelihood function ###
+
+Given that for complex $x = a + i b$, $x x^* = \left(a + i b\right)\left(a - i b\right) = a^2 + b^2$,
+we get
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.75]}]{align*}
+p(\bm{d}|\bm{\theta}, I)  & \propto \exp{\left(-\frac{1}{2} \left[ 4 \sum_{i=j}^k \frac{\textcolor{red}{\Re}\left(\tilde{d}_i - \tilde{s}_i(\bm{\theta})\right)^2 + \textcolor{red}{\Im}\left(\tilde{d}_i - \tilde{s}_i(\bm{\theta})\right)^2}{T S_n^{(i)}} \right]\right)}, \nonumber \\
+& \equiv \exp{\left(-\frac{1}{2} \left[ 4 \sum_{i=j}^k \frac{\textcolor{red}{\left|\tilde{d}_i - \tilde{s}_i(\bm{\theta})\right|^2}}{T S_n^{(i)}} \right]\right)}
+\end{empheq}-->
+This is the same as starting from the assumption that the noise in the real and imaginary parts of the Fourier transform are independent
+(but drawn from the same noise process), and writing the _joint_ the likelihood of these independent data sets.
+
+
+### Anatomy of the GW likelihood function ###
+
+For numerical reasons we generally work with the natural logarithm of the likelihood (and other
+probability densities), so
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.8]}]{equation*}
+\ln{p(\bm{d}|\bm{\theta}, I)} = -\frac{1}{2} \left[ 4 \sum_{i=j}^k \frac{\Re\left(\tilde{d}_i - \tilde{s}_i(\bm{\theta})\right)^2 + \Im\left(\tilde{d}_i - \tilde{s}_i(\bm{\theta})\right)^2}{T S_n^{(i)}} \right] + C,
+\end{empheq}-->
+where $C$ is the normalisation term given by (see Equation 12 of <!--\citet{2015PhRvD..91d2003V}-->)
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.8]}]{equation*}
+C = -\frac{1}{2}\sum_{i=j}^k \ln{\left(\pi T S_n^{(i)} / 2 \right)}.
+\end{empheq}-->
+
+
+### Anatomy of the GW likelihood function ###
+
+If we expand out the quadratic terms we get:
+<!--
+\begin{itemize}
+\item the {\it null} log-likelihood (noise-only log {\it evidence}):
+\end{itemize}
+\begin{empheq}[box={\borderedmathbox[scale=0.7]}]{equation*}
+\ln{p(\bm{d}|\bm{s}(\bm{\theta})=0, I)} \equiv \mathcal{L}_n = -(2/T) \sum_i \left(\Re{(d_i)^2} + \Im{(d_i)^2}\right)/S_n^{(i)} + C,\end{empheq}
+\begin{itemize}
+\item the {\it optimal} signal-to-noise:
+\end{itemize}
+\begin{empheq}[box={\borderedmathbox[scale=0.7]}]{equation*}
+\rho^2_{\rm opt} = (4/T) \sum_i \left(\Re{(s_i)^2} + \Im{(s_i)^2}\right)/S_n^{(i)},
+\end{empheq}
+\begin{itemize}
+\item the {\it matched filter} signal-to-noise:
+\end{itemize}
+\begin{empheq}[box={\borderedmathbox[scale=0.7]}]{equation*}
+\rho^2_{\rm mf} = (4/T) \sum_i \left(\Re{(d_i)}\Re{(s_i)} + \Im{(d_i)}\Im{(s_i)}\right)/S_n^{(i)}.\end{empheq}
+-->
+
+
+### Anatomy of the GW likelihood function ###
+
+So, we can write the log-likelihood in terms of:
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.8]}]{equation*}
+\ln{p(d|\bm{\theta}, I)} = -\frac{1}{2}\left(\rho^2_{\rm opt}(\bm{\theta}) - 2\rho^2_{\rm mf}(\bm{\theta})\right) + \mathcal{L}_n.
+\end{empheq}-->
+The log of the likelihood ratio $p(\bm{d}|\bm{\theta}, I) / p(\bm{d}|\bm{s}(\bm{\theta})=0, I)$ is therefore:
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.8]}]{equation*}
+\mathcal{L}(\bm{\theta}) - \mathcal{L}_n = -\frac{1}{2}\left(\rho^2_{\rm opt}(\bm{\theta}) - 2\rho^2_{\rm mf}(\bm{\theta})\right).
+\end{empheq}-->
+Evaluating the likelihood over the parameter space effectively required evaluating these $\rho^2$ terms.
 
 
 ### Gravitational wave parameters ###
 
-CBC signals are defined by 15 intrinsic parameters (only 9 for a non-spinning system):
+CBC signals are defined by 15 parameters (only 9 for a non-spinning system):
 
 <!--\scalebox{0.8}{\begin{columns}[T]
 \begin{column}{0.5\textwidth}-->
@@ -453,7 +563,7 @@ Spinning sources:
 ### Gravitational wave parameters ###
 
 
-You're free to choose whatever priors you want, but commonly we use priors that are (see [][#2015PhRvD..91d2003V]):
+You're free to choose whatever priors you want, but commonly we use priors that are (see <!--\citet{2015PhRvD..91d2003V}-->):
 
 <!--\begin{columns}\begin{column}{0.6\textwidth} -->
  * <!-- {\scriptsize uniform in component masses with the constraints that $m_1 > m_2$ and $m_1 + m_2 < M_{\rm max}$}-->
@@ -467,7 +577,7 @@ You're free to choose whatever priors you want, but commonly we use priors that 
 \begin{figure}[htbp]
 \centering
 \includegraphics[keepaspectratio, width=\textwidth]{figures/massprior.png}
-\caption*{{\tiny Example of uniform mass prior from \cite{2015PhRvD..91d2003V}}.}
+\caption*{{\tiny Example of uniform mass prior from \citet{2015PhRvD..91d2003V}}.}
 \label{massprior}
 \end{figure}
 
@@ -478,6 +588,92 @@ You're free to choose whatever priors you want, but commonly we use priors that 
 ### Bibliography ###
 
 <!--
-\bibliographystyle{unsrt}
-\bibliography{lecture_notes}
+\bibliographystyle{unsrtnat}
+
+\begin{thebibliography}{99}
+
+\bibitem[{{Veitch} {et~al.}(2015){Veitch}, \& et~al.}]{2015PhRvD..91d2003V}
+J.~{Veitch} et~al.
+\newblock {Parameter estimation for compact binaries with ground-based
+  gravitational-wave observations using the LALInference software library}.
+\newblock {\em Phys.\ Rev.\ D}, 91, 042003, 2015.
+
+\bibitem[{{Biwer} {et~al.}(2019){Biwer}, \& et~al.}]{Biwer:2018osg}
+C.~M. Biwer et~al.
+\newblock {PyCBC Inference: A Python-based parameter estimation toolkit for
+  compact binary coalescence signals}.
+\newblock {\em Publ. Astron. Soc. Pac.}, 131, 024503, 2019.
+
+\bibitem[{{Sivia}(2006){Sivia}}]{Sivia}
+D.~S. {Sivia}.
+\newblock {\em Data analysis: A Bayesian Tutorial}.
+\newblock Oxford University Press, 2006.
+
+\end{thebibliography}
 -->
+
+
+### Appendix: Rules of probability ###
+
+The rules for probabilities of propositions are inherited from classical logic and Boolean algebra:
+
+* _Law of Excluded Middle_ $P(A\text{ or not}(A)) = 1$
+* _Law of Non-contradiction_ $P(A\text{ and not}(A)) = 0$
+    * i.e. $P(A) + P(\text{not }A) = 1$ (the **sum rule**)
+* _Association_
+    * $P(A,[B,C]) = P([A,B],C)$
+    * $P(A \text{ or } [B \text{ or }C]) = P([A \text{ or } B] \text{ or }C)$
+* _Distribution_
+    * $P(A,[B\text{ or }C]) = P(A,B\text{ or }A,C)$
+    * $P(A\text{ or }[B,C]) = P([A\text{ or }B],[A\text{ or }C])$
+
+
+### Appendix: Rules of probability ###
+
+* _Commutation_
+    * $P(A,B) = P(B,A)$
+    * $P(A \text{ or } B) = P(B \text{ or } A)$
+* _Duality_ (De Morgan's Theorem)
+    * $P(\text{not }[A,B]) = P(\text{not}(A) \text{ or } \text{not}(B))$
+    * $P(\text{not }[A\text{ or }B]) = P(\text{not}(A),\text{not}(B))$
+
+
+### Appendix: Rules of probability ###
+
+Note that you may see other notation for probabilities expressed with Boolean logic (this list is 
+not exhaustive)
+
+* Negation ($A$ is false)
+    * $P(\text{not }A)$, or $P(\bar{A})$, or $P(\lnot A)$
+* Logical product (both A _and_ B are true)
+    * $P(A,B)$, or $P(AB)$, or $P(A\text{ and }B)$, or $P(A\land B)$
+* Logical sum (at least one of A _or_ B is true)
+    * $P(A+B)$, or $P(A\text{ or }B)$, or $P(A\lor B)$
+
+
+### Appendix: Rules of probability ###
+    
+From these axioms we can derive:
+
+* The **(Extended) Sum Rule**
+    * $P(A\text{ or }B) = P(A) + P(B) - P(A\text{ and }B)$
+* The **Product Rule**
+    * $P(A\text{ and }B) \equiv p(A,B) = P(A)P(B|A) = P(B)P(A|B)$, where $P(x|y)$ is the probability that $x$ is true given $y$ is true. 
+
+These rules apply to probabilities $P$ and also probability density functions (pdfs) $p$.
+
+
+### Appendix: Rules of probability ###
+
+_Simple demonstration of the extended sum rule._
+
+What is the probability that a card drawn from a standard deck of cards is a spade _or_ an ace?
+
+We have $P(\spadesuit) = 13/52 = 1/4$ and $P(\text{ace}) = 4/52 = 1/13$, and $P(\spadesuit\text{ 
+and ace}) = 1/(4\times 13) = 1/52$. It is reasonably obvious that for $P(\spadesuit\text{ or ace})$ 
+we want to sum the probabilities for both cases, however they both contain the case where 
+$P(\spadesuit\text{ and ace})$, so we have to remove one of those instances
+
+\\[
+P(\spadesuit\text{ or ace}) = \frac{13 + 4 - 1}{52} = \frac{16}{52}
+\\]
