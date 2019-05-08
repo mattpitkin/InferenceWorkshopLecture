@@ -57,8 +57,9 @@ recommend are:
 
 Some useful papers to read are:
 
-* The ``LALInference`` paper <!--\citep{2015PhRvD..91d2003V}-->
+* The ``LALInference`` paper <!--\citep{2015PhRvD..91d2003V}-->.
 * The <!--\textsc{PyCBC Inference} paper \citep{Biwer:2018osg}-->.
+* The <!--\textsc{Bilby} paper \citep{Ashton:2019}-->.
 
 
 ### Bayes' theorem ###
@@ -252,10 +253,27 @@ p(x|\bm{d},I) = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} p(x, y, z|\bm{d}
 In some cases marginalisation can be performed analytically. For low dimensional problems, with a well localised
 posterior (i.e., it doesn't have support out to $\pm \infty$), the posterior can be evaluated on a grid and
 marginalisation can be performed numerically. For high-dimensional problems this is not viable and we must use
-stochastic sampling methods, e.g., <!--\href{https://en.wikipedia.org/wiki/Markov\_chain\_Monte\_Carlo}{\bf \color{violet}{Markov chain Monte Carlo}}--> (see talk be Vivien Raymond) or <!--\href{https://en.wikipedia.org/wiki/Nested_sampling_algorithm}{\bf \color{violet}{nested sampling}}--> (see talk by John Veitch).
+stochastic sampling methods, e.g., <!--\href{https://en.wikipedia.org/wiki/Markov\_chain\_Monte\_Carlo}{\bf \color{violet}{Markov chain Monte Carlo}}--> (see talk be Vivien Raymond) or <!--\href{https://en.wikipedia.org/wiki/Nested\_sampling\_algorithm}{\bf \color{violet}{nested sampling}}--> (see talk by John Veitch).
 
 
-### Evidence calculation ###
+### Evidence ###
+
+<!--{\footnotesize The normalisation constant for the posterior probability is often called the Bayesian \href{https://en.wikipedia.org/wiki/Marginal\_likelihood}{{\bf {\color{violet} evidence}}, or {\bf {\color{violet} marginal likelihood}}}}-->,
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+p(\bm{d}|\mathcal{H},I) = \int^{\bm{\theta}} p(\bm{d}| \bm{\theta}, \mathcal{H}, I) p(\bm{\theta}|\mathcal{H}, I) {\rm d}\bm{\theta},
+\end{empheq}-->
+<!--{\footnotesize where the integral is multi-dimensional over all parameters $\bm{\theta} = \{\theta_1, \theta_2, \dots, \theta_n\}$. Here we been explicitly stated that the likelihood and prior are conditional on a given model, or hypothesis, $\mathcal{H}$. Hence, the evidence is the {\it likelihood} of observing the data for a given model $\mathcal{H}$.}
+
+{\footnotesize The multi-dimensional integral may difficult/impossible to compute analytically or using standard numerical integration methods, so the \href{https://en.wikipedia.org/wiki/Nested\_sampling\_algorithm}{\bf \color{violet}{nested sampling}} algorithm may be required (see talk by John Veitch).}-->
+
+### Model comparison ###
+
+<!--{\footnotesize If you are purely interested in marginal posterior distributions the normalisation is not important and can must often
+be ignored. However, the evidence allows you to compare different models (say $\mathcal{H}_1$ and $\mathcal{H}_2$) given the same data. The model odds is:}
+\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+\mathcal{O}_{12} \equiv \redub{\frac{p(\mathcal{H}_1|\bm{d}, I)}{p(\mathcal{H}_2|\bm{d}, I)}}_{\mathclap{\text{Model Odds}}} = \redob{\frac{\bm{d}| p(\mathcal{H}_1, I)}{p(\bm{d}|\mathcal{H}_2, I)}}^{\mathclap{\text{Bayes Factor}}} \redob{\frac{p(\mathcal{H}_1| I)}{p(\mathcal{H}_2| I)}}^{\mathclap{\text{Prior Odds}}}.
+\end{empheq}
+{\footnotesize \href{https://en.wikipedia.org/wiki/Bayes\_factor}{\bf \color{violet}{Bayes factor}} is the ratio of the evidences for the two hypotheses. The prior odds defines the {\it a priori} relative degree-of-belief about each model, which in practice is often set to unity, i.e., neither model is preferred {\it a priori}.}-->
 
 
 ### Bayesian credible interval ###
@@ -332,7 +350,7 @@ p(\mathbf{d}|\vec{\theta},\bm{\sigma},I) = \left(\prod_{i=1}^n \frac{1}{\sqrt{2\
 
 If the noise process is Gaussian, but the noise is
 correlated and can be defined by a known (or estimatable) covariance matrix $\bm{\Sigma}$ (a <!--\href{https://en.wikipedia.org/wiki/Stationary\_process\#Weak\_or\_wide-sense_stationarity}{\color{violet}{\bf weakly stationary} process}-->), we have a <!-- \href{https://en.wikipedia.org/wiki/Multivariate\_normal\_distribution}{\it multivariate normal distribution}-->:
-<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation}\label{eq:gauss}
 p(\mathbf{d}|\vec{\theta}, \bm{\Sigma}, I) = \left(2\pi\right)^{n/2}\left|\bm{\Sigma}\right|^{-1/2}\exp{\left(-\frac{1}{2}\left(\mathbf{d} - \mathbf{s}(\vec{\theta})\right)'\bm{\Sigma}^{-1}\left(\mathbf{d} - \mathbf{s}(\vec{\theta})\right)\right)},
 \end{empheq}-->
 where $\mathbf{s}(\vec{\theta}) = \{s_1(\vec{\theta)}, \dots, s_N(\vec{\theta)}\}$. This becomes the previous case if $\bm{\Sigma}$ is diagonal.
@@ -423,7 +441,7 @@ where $\Delta c$ are the grid step sizes in $c$ (or you could use the trapezium 
 
 <!--{\scriptsize Gravitational-wave detectors produce a {\it real} time series of strain measurements $h(t)$ (``$h$ {\it of} $t$'').
 This is the linear combination of noise (assumed to be produced by a weakly stationary process, i.e.,
-coloured Gaussian noise) and the signal as projected onto the detector via its response function:}
+\href{https://en.wikipedia.org/wiki/Colors\_of\_noise}{\bf \color{violet}{coloured Gaussian noise}}) and the signal as projected onto the detector via its response function:}
 \begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
 h(t) = n(t) + s(t; \bm{\theta}),
 \end{empheq}
@@ -435,17 +453,59 @@ s(t; \bm{\theta}) = F_+^D(t; \alpha, \delta, \psi) h_+(t; \bm{\theta}') + F_{\ti
 <!--{\tiny $F_{+/\times}^D$ are the `plus' and `cross' polarisation responses of detector $D$ to a source at a sky position given by right ascension $\alpha$ and declination $\delta$ and with polarisation angle $\psi$. $h_{+/\times}$ are the source amplitudes at the Earth defined by the parameters $\bm{\theta}'$, where $\bm{\theta} = \{\alpha, \delta, \psi, \bm{\theta}'\}$.}-->
 
 
-### The power spectral density ###
+### Inference for gravitational-wave astronomy ###
+
+<!--{\footnotesize We are interested in using $h(t)$ (we'll use $\bm{d}$ for the vector of observed time series {\it data} points instead of $h$ from now on) to infer the marginal probability distributions of the parameters
+$\bm{\theta}$ (or some subset of them). E.g., the posteriors on the sky position of the source}
+\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+p(\alpha, \delta|\bm{d}, I) \propto \int^{\bm{\theta}_{\not\in \{\alpha, \delta\}}} p(\bm{d}|\bm{\theta},I) p(\bm{\theta}|I) {\rm d}\bm{\theta}_{\not\in \{\alpha, \delta\}},
+\end{empheq}
+{\footnotesize or the source masses for a compact binary coalescence event}
+\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+p(m_1, m_2|\bm{d}, I) \propto \int^{\bm{\theta}_{\not\in \{m_1, m_2\}}} p(\bm{d}|\bm{\theta},I) p(\bm{\theta}|I) {\rm d}\bm{\theta}_{\not\in \{m_1, m_2\}}.
+\end{empheq}
+{\footnotesize So, we need to have a likelihood for the data and a prior for the source parameters.}-->
 
 
-### Time domain vs. frequency domain ###
+### Inference in gravitational-wave astronomy ###
+
+<!--\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{figure}[htbp]
+\centering
+\includegraphics[keepaspectratio, width=\textwidth]{figures/skyloc_GW150914.png}
+\caption*{{\tiny Sky location posterior for GW150914 \citep{Abbott:2016}}.}
+\label{skyloc}
+\end{figure}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{figure}[htbp]
+\centering
+\includegraphics[keepaspectratio, width=\textwidth]{figures/masses_GW150914.png}
+\caption*{{\tiny Source mass posteriors for GW150914 \citep{Abbott:2016}}.}
+\label{skyloc}
+\end{figure}
+\end{column}
+\end{columns}-->
+
+
+### Examples of inference in gravitational-wave astronomy ###
+
+A non-exhaustive list examples of where Bayesian inference has been used in (ground-based) gravitational-wave astronomy:
+
+* Searches for continuous (monochromatic) gravitational waves from known pulsars
+* Source parameter estimation for CBC signals
+* Unmodelled burst event trigger generator (<!--{\textsc{BlockNormal}}-->)
+* Unmodelled burst waveform reconstruction, glitch reconstruction, and power spectrum esitmation (<!--{\textsc{BayesWave}}-->)
+* Unmodelled burst parameter estimation (oLIB)
+* Supernova signal model comparison (SMEE)
+* Hierarchical inference of CBC mass and spin distributions
 
 
 ### Anatomy of the GW likelihood function ###
 
 We've seen the "standard" Gaussian likelihood function, but in GW papers you
-might (see, e.g., Equations 3 and 4 of [][#Biwer:2018osg], assuming a single detector,
-and ignoring the normalisation):
+might see <!--\citep[e.g., Equations 3 and 4 of][assuming a single detector, and ignoring the normalisation]{Biwer:2018osg}-->:
 <!--\begin{empheq}[box={\borderedmathbox[scale=0.6, left=10mm, right=10mm]}]{align*}
 p(\bm{d}|\bm{\theta}, I) \propto&  \exp{\left(-\frac{1}{2} \redob{\langle \tilde{d}(f) - \tilde{s}(f;\bm{\theta}) | \tilde{d}(f) - \tilde{s}(f;\bm{\theta}) \rangle}^{\mathclap{\text{noise weighted innner product}}}\right)} \nonumber \\
 \equiv & \exp{\left(-\frac{1}{2} \left[ 4\Re \int_0^\infty \frac{\left(\tilde{d}(f) - \tilde{s}(f;\bm{\theta})\right)\left(\tilde{d}(f) - \tilde{s}(f;\bm{\theta})\right)^*}{S_n} {\rm d}f \right]\right)},
@@ -531,7 +591,27 @@ The log of the likelihood ratio $p(\bm{d}|\bm{\theta}, I) / p(\bm{d}|\bm{s}(\bm{
 Evaluating the likelihood over the parameter space effectively required evaluating these $\rho^2$ terms.
 
 
-### Gravitational wave parameters ###
+### The power spectral density ###
+
+In the above likelihood it assumes the noise in each frequency bin is independent as Gaussian, with
+a variance defined by the <!--\href{https://en.wikipedia.org/wiki/Spectral\_density\#Power\_spectral\_density}{\bf \color{violet}{power spectral density}}-->. 
+
+The variance in each frequency bin is given by $\sigma_i^2 = (T/4)S_n^{(i)}$. 
+
+
+### Time domain likelihood ###
+
+For broadband signals, like those from CBC, the coloured nature of the noise generally means it's easier
+to work in the frequency domain; in the frequency domain we just have vector-vector dot products of the data/signal and PSD rather than a vector-matrix product of the data/signal and the correlation matrix as in <!--Equation~\ref{eq:gauss}--> (i.e., its just a multiplication in the frequency domain rather than a <!--\href{https://en.wikipedia.org/wiki/Convolution\_theorem}{\bf \color{violet}{convolution}}-->).
+
+But, some advantage of the time-domain are:
+
+* you do not have to worry about windowing(!);
+* time delays are just time delays rather than frequency dependent phase shifts;
+* the start and end of signals can be simply defined.
+
+
+### Gravitational-wave parameters ###
 
 CBC signals are defined by 15 parameters (only 9 for a non-spinning system):
 
@@ -559,7 +639,7 @@ Spinning sources:
 \end{columns}}-->
 
 
-### Gravitational wave parameters ###
+### Gravitational-wave parameters ###
 
 
 You're free to choose whatever priors you want, but commonly we use priors that are (see <!--\citet{2015PhRvD..91d2003V}-->):
@@ -592,21 +672,31 @@ You're free to choose whatever priors you want, but commonly we use priors that 
 \begin{thebibliography}{99}
 
 \bibitem[{{Veitch} {et~al.}(2015){Veitch}, \& et~al.}]{2015PhRvD..91d2003V}
-J.~{Veitch} et~al.
-\newblock {Parameter estimation for compact binaries with ground-based
-  gravitational-wave observations using the LALInference software library}.
-\newblock {\em Phys.\ Rev.\ D}, 91, 042003, 2015.
+{\scriptsize J.~{Veitch} et~al.
+\newblock {\href{https://ui.adsabs.harvard.edu/abs/2015PhRvD..91d2003V/abstract}{\color{blue}{Parameter estimation for compact binaries with ground-based
+  gravitational-wave observations using the LALInference software library}}}.
+\newblock {\em Phys.\ Rev.\ D}, 91, 042003, 2015.}
 
 \bibitem[{{Biwer} {et~al.}(2019){Biwer}, \& et~al.}]{Biwer:2018osg}
-C.~M. Biwer et~al.
-\newblock {PyCBC Inference: A Python-based parameter estimation toolkit for
-  compact binary coalescence signals}.
-\newblock {\em Publ. Astron. Soc. Pac.}, 131, 024503, 2019.
+{\scriptsize C.~M. Biwer et~al.
+\newblock {\href{https://ui.adsabs.harvard.edu/abs/2019PASP..131b4503B/abstract}{\color{blue}{PyCBC Inference: A Python-based parameter estimation toolkit for
+  compact binary coalescence signals}}}.
+\newblock {\em Publ. Astron. Soc. Pac.}, 131, 024503, 2019.}
+
+\bibitem[{{Ashton} {et~al.}(2019){Ashton}, \& et~al.}]{Ashton:2019}
+{\scriptsize G. Ashton et~al.
+\newblock{\href{https://ui.adsabs.harvard.edu/abs/2019ApJS..241...27A/abstract}{\color{blue}{BILBY: A User-friendly Bayesian Inference Library for Gravitational-wave Astronomy}}}
+\newblock{\em Astrophys. J. Supplement Series}, 241, 27, 2019.}
 
 \bibitem[{{Sivia}(2006){Sivia}}]{Sivia}
-D.~S. {Sivia}.
+{\scriptsize D.~S. {Sivia}.
 \newblock {\em Data analysis: A Bayesian Tutorial}.
-\newblock Oxford University Press, 2006.
+\newblock Oxford University Press, 2006.}
+
+\bibitem[{{Abbott} {et~al.}(2016){Abbott}, \& et~al.}]{Abbott:2016}
+{\scriptsize B.~P. Abbott et~al.
+\newblock{\href{https://ui.adsabs.harvard.edu/abs/2016PhRvL.116x1102A/abstract}{\color{blue}{Properties of the Binary Black Hole Merger GW150914}}}
+\newblock{\em Phys.\ Rev.\ Lett.}, 116, 241102, 2016.}
 
 \end{thebibliography}
 -->
