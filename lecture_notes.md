@@ -79,13 +79,12 @@ information $I$.
 
 Bayes theorem can be cast in terms of a **model** and some observations, or **data**. It tells us 
 how to update our degree of belief about our model based on new data.
-\\[
+<!--\begin{empheq}[box={\borderedmathbox}]{equation*}
 \redub{P(\text{model}|\text{data},I)}_{\mathclap{\text{Posterior}}} = 
 \frac{\redob{P(\text{data}|\text{model},I)}^{\mathclap{\text{Likelihood}}} 
 \redob{p(\text{model}|I)}^{\mathclap{\text{Prior}}}}{\redub{P(\text{data}|I)}_{\mathclap{\text{
 Evidence } } } }
-\\]
-
+\end{empheq}-->
 We can often calculate the these terms (e.g., analytically or numerically on a computer). 
 
 
@@ -111,9 +110,9 @@ the range in which the bias weighting $H$ of the coin might lie:
 
 Given some data (an observed number of coin tosses) we can assess how much we believe each of
 these propositions (e.g. $0 \le H < 0.01$, $0.01 \le H < 0.02$, and so on) to be true, e.g.
-\\[
+<!--\begin{empheq}[box={\borderedmathbox}]{equation*}
 \text{Prob}(0 \le H < 0.01|d)
-\\]
+\end{empheq}-->
 
 [^fnsvia]: See e.g. Chap. 2 of <!--\citet{Sivia}-->.
 
@@ -126,9 +125,9 @@ $p(H|d,I)$, i.e. the _posterior_. We can use Bayes' theorem to calculate it.
 
 For coin flips, assuming that they are independent events, the probability of obtaining `$r$ heads in
 $n$ tosses' is given by the binomial distribution, so our _likelihood_ is:
-\\[
+<!--\begin{empheq}[box={\borderedmathbox}]{equation*}
 p(d|H,I) \propto H^r(1-H)^{n-r}
-\\]
+\end{empheq}-->
 But, what should we use as our _prior_?
 
 
@@ -139,13 +138,13 @@ But, what should we use as our _prior_?
 Assuming we have no knowledge about the provenance of the coin, or the person tossing it, and want to
 reflect total ignorance of the possible bias, then a simple probability reflecting this is a **uniform**,
 or **flat**, pdf:
-\\[
+<!--\begin{empheq}[box={\borderedmathbox}]{equation*}
 p(H|I) =
 \begin{cases}
 1, \text{if } 0 \le H \le 1, \\
 0, \text{otherwise}.
 \end{cases}
-\\]
+\end{empheq}-->
 Using these we can calculate our posterior, $p(H|d,I)$, as we obtain more data (counting $r$ as the
 number of coin tosses, $n$, increases).[^fncoinscript]
 
@@ -180,9 +179,9 @@ We know that coins are generally fair, so what if we assume this one is too?
 
 We can assign a Gaussian prior distribution that focusses the probability around the
 expected 'fair coin' value
-\\[
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
 p(H|I) \propto \exp{\left(-\frac{1}{2}\frac{(H-\mu_H)^2}{\sigma_H^2}\right)},
-\\]
+\end{empheq}-->
 with $\sigma_H = 0.05$ and $\mu_H = 0.5$.[^fncoinscript2]
 
 [^fncoinscript2]: See <!--\href{https://github.com/mattpitkin/InferenceWorkshopLecture/blob/master/figures/scripts/coin\_toss\_2.py}{\tt coin\_toss\_2.py} -->
@@ -208,11 +207,52 @@ data
 **credible intervals**), to quantify our uncertainty on $H$.
 
 
+### Probability mass and probability density ###
+
+The probability distribution for a _discrete_ parameter is called the <!--\href{https://en.wikipedia.org/wiki/Probability\_mass\_function}{{\bf {\color{violet} probability mass function}} (PMF)}-->. The value of the PMF at a
+particular value of the parameter (say $H$) is the _probability_ for that value, and we must have:
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+\sum_{i=1}^N P(H| I) = 1
+\end{empheq}-->
+
+
+### Probability mass and probability density ###
+
+For a continuous parameter, the probability distribution is called the
+<!--\href{https://en.wikipedia.org/wiki/Probability\_density\_function}{{\bf {\color{violet} probability density function}} (PDF)}-->. The value of the PDF
+at a particular parameter value is _not_ the probability for the value, it is a probability _density_, and the probability
+can be calculated only for some range of the allowed parameter values, e.g.
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+P(h_1 \leq H \leq h_2)  = \int_{h_1}^{h_2} p(H| I) {\rm d}H,
+\end{empheq}-->
+provided the probability distribution is properly normalised, such that
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+\int_{-\infty}^{\infty} p(H| I) {\rm d}H = 1.
+\end{empheq}-->
+
+
 ### Marginalisation ###
 
-* analytically
-* numerically
-* stochastic sampling
+Posteriors probability distributions have the same dimensionality as the number of parameters you want to infer in your
+probabilistic model, e.g., if we need to infer the gradient and $y$-intercept of a straight line ($m$ and $c$) from some data ($\bm{d}$),
+then you have two parameters and your posterior will be two-dimensional: $p(m, c|\bm{d}, I)$.
+
+You may only be interested in the distribution of one (or some subset) of the parameters, so you <!--\href{https://en.wikipedia.org/wiki/Marginal\_distribution}{\bf \color{violet}{marginalise}}--> (i.e., integrate) over the _nuisance_ parameters. E.g., if we're only interested in the gradient of the line then:
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+p(m|\bm{d},I) = \int_{-\infty}^{\infty} p(m, c|\bm{d}, I) {\rm d}c.
+\end{empheq}-->
+
+
+### Marginalisation ###
+
+For higher dimensional problems multiple integrals may be required:
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+p(x|\bm{d},I) = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} p(x, y, z|\bm{d}, I) {\rm d}y {\rm d}z.
+\end{empheq}-->
+In some cases marginalisation can be performed analytically. For low dimensional problems, with a well localised
+posterior (i.e., it doesn't have support out to $\pm \infty$), the posterior can be evaluated on a grid and
+marginalisation can be performed numerically. For high-dimensional problems this is not viable and we must use
+stochastic sampling methods, e.g., <!--\href{https://en.wikipedia.org/wiki/Markov\_chain\_Monte\_Carlo}{\bf \color{violet}{Markov chain Monte Carlo}}--> (see talk be Vivien Raymond) or <!--\href{https://en.wikipedia.org/wiki/Nested_sampling_algorithm}{\bf \color{violet}{nested sampling}}--> (see talk by John Veitch).
 
 
 ### Evidence calculation ###
@@ -222,16 +262,13 @@ data
 
 We define a <!--\href{https://en.wikipedia.org/wiki/Credible\_interval}{\color{violet}{\bf credible interval}}--> $[\theta_a, \theta_b]$ as a (_non-unique_) range that a
 contains a certain amount of posterior probability, $X$,
-\\[
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
 X = \int_{\theta_a}^{\theta_b} p(\theta|d,I) {\rm d}\theta.
-\\]
+\end{empheq}-->
 If $X=0.95$ then we can find $[\theta_a, \theta_b]$ that e.g. gives the minimum range containing
 95% of the probability.
 
 The meaning of this is simple: _we are 95% sure that $\theta$ lies between $\theta_a$ and $\theta_b$._
-
-This is just based on the data at hand and requires no assumptions about a frequency of measuring a
-statistic over multiple trials.
 
 
 ### The Gaussian/Normal Likelihood ###
