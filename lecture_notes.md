@@ -237,9 +237,9 @@ statistic over multiple trials.
 ### The Gaussian/Normal Likelihood ###
 
 In many situations in physics/astronomy our data consists of the signal with some additive noise, e.g. considering a single data point
-\\[
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
 d_1 = s_1 + n_1.
-\\]
+\end{empheq}-->
 We are interested in the _inverse problem_ of inferring the properties of the signal given the data.
 To do this, and define a likelihood, we need to make some assumptions about the noise properties.
 
@@ -329,36 +329,35 @@ The <!--\href{https://en.wikipedia.org/wiki/Autocorrelation}{\textbf{\color{viol
 
 ### Example: fitting a line ###
 
-As an example, we'll examine the problem of fitting a line $y = mx+c$ to data, $d$ (<!--\href{https://en.wikipedia.org/wiki/Linear_regression}{\color{violet}{\bf linear regression}}-->). We can write the posterior for
+As an example, we'll examine the problem of fitting a line $\bm{y} = m\bm{x}+c$ to data, $\bm{d}$ (<!--\href{https://en.wikipedia.org/wiki/Linear_regression}{\color{violet}{\bf linear regression}}-->). We can write the posterior for
 the parameters
-\\[
-p(m,c|d,I) \propto \redub{p(d|m,c,I)}_{\mathclap{\text{Likelihood}}} \times \redub{p(m,c|I)}_{\mathclap{\text{Prior}}}.
-\\]
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.8]}]{equation*}
+p(m,c|\bm{d},I) \propto \redub{p(\bm{d}|m,c,I)}_{\mathclap{\text{Likelihood}}} \times \redub{p(m,c|I)}_{\mathclap{\text{Prior}}}.
+\end{empheq}-->
 If the prior on the parameters is uniform and independent, so
-\\[
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.8]}]{equation*}
 p(m,c|I) = p(m|I)p(c|I) = \text{constant},
-\\]
+\end{empheq}-->
 then the posterior is
-\\[
-p(m,c|d,I) \propto p(d|m,c,I)
-\\]
-and we can use the machinery of maximum likelihood to estimate the parameters (i.e. maximum
-likelihood can be derived from Bayesian reasoning with certain priors).
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.8]}]{equation*}
+p(m,c|\bm{d},I) \propto p(\bm{d}|m,c,I).
+\end{empheq}-->
+We could, in this case, use the machinery of _maximum likelihood_ to estimate the parameters.
 
 
 ### Example: fitting a line ###
 
-However, we will use this to show to general concept of fitting any (even _non-linear_) model. If
+However, we will use this to show to general concept of fitting any model (see <!--\href{https://github.com/mattpitkin/InferenceWorkshopLecture/blob/master/figures/scripts/bayesian\_line\_fittingy}{\scriptsize{\tt bayesian\_line\_fitting.py}}-->). If
 the likelihood is Gaussian, with known values of $\sigma_i$, then
-\\[
-p(m,c|d,I) = p(m,c|I)\left(\frac{1}{2\pi \sigma_i^2}\right)^{n/2}\exp{\left(-\sum_{i=1}^n\frac{[d_i-(m x_i + c)]^2}{2\sigma_i^2}\right)}
-\\]
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.8]}]{equation*}
+p(m,c|\bm{d},I) = p(m,c|I)\left(\frac{1}{2\pi \sigma_i^2}\right)^{n/2}\exp{\left(-\sum_{i=1}^n\frac{[d_i-(m x_i + c)]^2}{2\sigma_i^2}\right)}
+\end{empheq}-->
 and we can evaluate the posterior over a grid in the parameters $m$ and $c$.
 
 We can also compute the marginal posteriors on $m$ and $c$ as, e.g.
-\\[
-p(m|d,I) = \int_{-\infty}^{\infty} p(m,c|d,I) {\rm d}c.
-\\]
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+p(m|\bm{d},I) = \int_{-\infty}^{\infty} p(m,c|d,I) {\rm d}c.
+\end{empheq}-->
 
 
 ### Example: fitting a line ###
@@ -371,53 +370,16 @@ p(m|d,I) = \int_{-\infty}^{\infty} p(m,c|d,I) {\rm d}c.
 ### Example: fitting a line ###
 
 In the above example, in practice, when $p(m,c|I) = \text{constant}$ and $\sigma_i = \sigma$ are constant, we can just calculate the posterior[^fnlogspace] over a grid in $m$ and $c$
-\\[
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.7]}]{equation*}
 \ell(m_{i_m},c_{i_c}) = \ln{p(m_{i_m},c_{i_c}|d,I)} = -\sum_{i=1}^n\frac{[d_i-(m_{i_m} x_i + c_{i_c})]^2}{2\sigma^2}
-\\]
+\end{empheq}-->
 and get the marginal posteriors through numerical integration, e.g.
-\\[
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.7]}]{equation*}
 p(m_{i_m}|d,I) \propto \sum_{i_c}^{n_c} \exp{\left(\ell(m_{i_m},c_{i_c}) - \text{max}\ell(m,c)\right)} \Delta c
-\\]
+\end{empheq}-->
 where $\Delta c$ are the grid step sizes in $c$ (or you could use the trapezium rule for more accuracy).
 
 [^fnlogspace]: We generally work in natural logarithm space due to numerical precision issues.
-
-
-### Example: fitting a line ###
-
-What if we don't know $\sigma$?
-
-In this case we can treat $\sigma$ as another unknown variable and marginalise over it, e.g.
-\\[
-p(m,c|d,I) = p(m,c|I) \int_0^{\infty} p(d|m,c,\sigma,I)p(\sigma|I) {\rm d}\sigma
-\\]
-If the likelihood is Gaussian and we assume a flat prior on all parameters, e.g.
-\\[
-p(\sigma|I) = \begin{cases}C, \sigma > 0 \\ 0, \sigma \le 0\end{cases}
-\\]
-Then we have
-\\[
-p(m,c|d,I) \propto \int_0^{\infty} \sigma^{-n} \exp{\left(-\sum_{i=1}^n\frac{[d_i-(m x_i + c)]^2}{2\sigma^2}\right)} {\rm d}\sigma
-\\]
-
-
-### Example: fitting a line ###
-
-This integral is analytic, and through some substitution (see e.g. Chap. 3 of Sivia[][#Sivia]), becomes
-\\[
-p(m,c|d,I) \propto \left( \sum_{i=1}^n [d_i-(m x_i + c)]^2 \right)^{-(n-1)/2}
-\\]
-This is essentially a _Student's $t$-distribution_ with $\nu = (n-2)$ degrees of freedom.
-
-Note: if we were instead to use a prior on $\sigma$ of $p(\sigma|I) \propto 1/\sigma$ it would
-lead to a Student's $t$-distribution with $\nu = n-1$ degrees of freedom.
-
-
-### Example: fitting a line ###
-
-![][bayesian_line_fitting_2]
-
-[bayesian_line_fitting_2]: figures/bayesian_line_fitting_2.pdf "Bayesian line fitting example" height="210px"
 
 
 ### Inference for gravitational-wave astronomy ###
@@ -673,7 +635,44 @@ We have $P(\spadesuit) = 13/52 = 1/4$ and $P(\text{ace}) = 4/52 = 1/13$, and $P(
 and ace}) = 1/(4\times 13) = 1/52$. It is reasonably obvious that for $P(\spadesuit\text{ or ace})$ 
 we want to sum the probabilities for both cases, however they both contain the case where 
 $P(\spadesuit\text{ and ace})$, so we have to remove one of those instances
-
-\\[
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
 P(\spadesuit\text{ or ace}) = \frac{13 + 4 - 1}{52} = \frac{16}{52}
-\\]
+\end{empheq}-->
+
+
+### Appendix: fitting a line (unknown $\sigma$) ###
+
+What if we don't know $\sigma$?
+
+In this case we can treat $\sigma$ as another unknown variable and marginalise over it, e.g.
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.7]}]{equation*}
+p(m,c|\bm{d},I) = p(m,c|I) \int_0^{\infty} p(d|m,c,\sigma,I)p(\sigma|I) {\rm d}\sigma
+\end{empheq}-->
+If the likelihood is Gaussian and we assume a flat prior on all parameters, e.g.
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.7]}]{equation*}
+p(\sigma|I) = \begin{cases}C, \sigma > 0 \\ 0, \sigma \le 0\end{cases}
+\end{empheq}-->
+Then we have
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.7]}]{equation*}
+p(m,c|\bm{d},I) \propto \int_0^{\infty} \sigma^{-n} \exp{\left(-\sum_{i=1}^n\frac{[d_i-(m x_i + c)]^2}{2\sigma^2}\right)} {\rm d}\sigma
+\end{empheq}-->
+
+
+### Appendix: fitting a line (unknown $\sigma$) ###
+
+This integral is analytic, and through some substitution <!--\citep[see, e.g., Chap.\ 3 of][]{Sivia}-->, becomes
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+p(m,c|\bm{d},I) \propto \left( \sum_{i=1}^n [d_i-(m x_i + c)]^2 \right)^{-(n-1)/2}
+\end{empheq}-->
+This is essentially a <!--\href{https://en.wikipedia.org/wiki/Student\%27s\_t-distribution}{\bf \color{violet}{Student's $t$-distribution}}--> with $\nu = (n-2)$ degrees of freedom.
+
+Note: if we were instead to use a prior on $\sigma$ of $p(\sigma|I) \propto 1/\sigma$ it would
+lead to a Student's $t$-distribution with $\nu = n-1$ degrees of freedom.
+
+
+### Appendix: fitting a line (unknown $\sigma$) ###
+
+![][bayesian_line_fitting_2]
+
+[bayesian_line_fitting_2]: figures/bayesian_line_fitting_2.pdf "Bayesian line fitting example" height="210px"
+
