@@ -349,7 +349,7 @@ p(\mathbf{d}|\vec{\theta},\bm{\sigma},I) = \left(\prod_{i=1}^n \frac{1}{\sqrt{2\
 ### The joint likelihood: non-_i.i.d._ ###
 
 If the noise process is Gaussian, but the noise is
-correlated and can be defined by a known (or estimatable) covariance matrix $\bm{\Sigma}$ (a <!--\href{https://en.wikipedia.org/wiki/Stationary\_process\#Weak\_or\_wide-sense_stationarity}{\color{violet}{\bf weakly stationary} process}-->), we have a <!-- \href{https://en.wikipedia.org/wiki/Multivariate\_normal\_distribution}{\it multivariate normal distribution}-->:
+correlated and can be defined by a known (or estimatable) covariance matrix $\bm{\Sigma}$ (a <!--\href{https://en.wikipedia.org/wiki/Stationary\_process\#Weak\_or\_wide-sense_stationarity}{\color{violet}{\bf weakly stationary process}}-->), we have a <!-- \href{https://en.wikipedia.org/wiki/Multivariate\_normal\_distribution}{\bf \color{violet}{multivariate normal distribution}}-->:
 <!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation}\label{eq:gauss}
 p(\mathbf{d}|\vec{\theta}, \bm{\Sigma}, I) = \left(2\pi\right)^{n/2}\left|\bm{\Sigma}\right|^{-1/2}\exp{\left(-\frac{1}{2}\left(\mathbf{d} - \mathbf{s}(\vec{\theta})\right)'\bm{\Sigma}^{-1}\left(\mathbf{d} - \mathbf{s}(\vec{\theta})\right)\right)},
 \end{empheq}-->
@@ -495,8 +495,9 @@ A non-exhaustive list examples of where Bayesian inference has been used in (gro
 
 * Searches for continuous (monochromatic) gravitational waves from known pulsars
 * Source parameter estimation for CBC signals
+* Rapid CBC source sky and distance localisation (<!--{\textsc{BayeStar}}-->)
 * Unmodelled burst event trigger generator (<!--{\textsc{BlockNormal}}-->)
-* Unmodelled burst waveform reconstruction, glitch reconstruction, and power spectrum esitmation (<!--{\textsc{BayesWave}}-->)
+* Unmodelled burst waveform reconstruction, glitch reconstruction, and power spectrum estimation (<!--{\textsc{BayesWave}}-->)
 * Unmodelled burst parameter estimation (oLIB)
 * Supernova signal model comparison (SMEE)
 * Hierarchical inference of CBC mass and spin distributions
@@ -526,7 +527,7 @@ becomes
 <!--\begin{empheq}[box={\borderedmathbox[scale=0.75]}]{equation*}
 p(\bm{d}|\bm{\theta}, I) \propto \exp{\left(-\frac{1}{2} \left[ 4\Re \textcolor{red}{\sum_{i=j}^k} \frac{\left(\tilde{d}_i - \tilde{s}_i(\bm{\theta})\right)\left(\tilde{d}_i - \tilde{s}_i(\bm{\theta})\right)^*}{\textcolor{red}{T} S_n^{(i)}} \right]\right)},
 \end{empheq}-->
-due to $\int \dots {\rm d}f \approx \sum \dots \Delta f$, and $\Delta f = 1/T$ for data of length $T$ seconds,
+due to $\int \dots {\rm d}f \approx \sum \dots \Delta f$, and $\Delta f = 4/T$ for data of length $T$ seconds,
 and $i$ in the index over frequency bins from bin $j$ to $k$.
 
 
@@ -581,7 +582,7 @@ If we expand out the quadratic terms we get:
 ### Anatomy of the GW likelihood function ###
 
 So, we can write the log-likelihood in terms of:
-<!--\begin{empheq}[box={\borderedmathbox[scale=0.8]}]{equation*}
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.8]}]{equation}\label{eq:loglike}
 \ln{p(d|\bm{\theta}, I)} = -\frac{1}{2}\left(\rho^2_{\rm opt}(\bm{\theta}) - 2\rho^2_{\rm mf}(\bm{\theta})\right) + \mathcal{L}_n.
 \end{empheq}-->
 The log of the likelihood ratio $p(\bm{d}|\bm{\theta}, I) / p(\bm{d}|\bm{s}(\bm{\theta})=0, I)$ is therefore:
@@ -593,11 +594,29 @@ Evaluating the likelihood over the parameter space effectively required evaluati
 
 ### The power spectral density ###
 
-In the above likelihood it assumes the noise in each frequency bin is independent as Gaussian, with
-a variance defined by the <!--\href{https://en.wikipedia.org/wiki/Spectral\_density\#Power\_spectral\_density}{\bf \color{violet}{power spectral density}}-->. 
+In the above likelihood it assumes the noise in each frequency bin is independent and Gaussian, with
+a variance defined using the _one-sided_ <!--\href{https://en.wikipedia.org/wiki/Spectral\_density\#Power\_spectral\_density}{\bf \color{violet}{power spectral density}}--> (PSD), $S_n(f)$, given by[^fnpsd]
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.8]}]{equation*}
+S_n(f) = \frac{2}{N^2\Delta f}|\tilde{n}(f)|^2,\text{~with~}\tilde{n}(f_k) = \sum_j n_j e^{-2\pi i j k/N},
+\end{empheq}-->
+where $N$ is the number of data points, and $\Delta f = 1/T = 1/(N\Delta t)$ for observation time $T$ <!--\citep[see, e.g. Appendix of][]{Veitch:2010}-->
 
-The variance in each frequency bin is given by $\sigma_i^2 = (T/4)S_n^{(i)}$. 
+The variance for the real and imaginary components of each frequency bin is given by $\sigma_i^2 = (T/4)S_n^{(i)}$,
+which when substituted into <!--Equation~(\ref{eq:loglike})--> gives the standard Gaussian log-likelihood.
 
+[^fnpsd]: This is equivalent to the Fourier transform of the noise autocorrelation function.
+
+### The power spectral density ###
+
+In practice we estimate the PSD using, e.g., <!--\href{https://en.wikipedia.org/wiki/Welch\%27s\_method}{\bf \color{violet}{Welch's method}}-->. A stretch of noise-only data is chosen and
+divided into $M$ overlapping segments (with fractional overlap $\alpha$) each of the same length, which is
+the same length $N$ as the data segment to be analysed. Each segments is multiplied by a window, Fourier
+transformed, and the average power from all segments is used:
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.8]}]{equation*}
+S_n(f) = \frac{2}{MN^2\Delta f} \sum_{i=0}^{M-1} \left|{\rm FFT}(d(t_{1+i\alpha N: N(1+i\alpha)})w(t))\right|^2.
+\end{empheq}-->
+Windowing is _vital_ (when Fourier tranforming the analysis segment and for the PSR estimation) to prevent
+<!--\href{https://en.wikipedia.org/wiki/Spectral\_leakage}{\bf \color{violet}{spectral leakage}}--> and add in correlations to the data.
 
 ### Time domain likelihood ###
 
@@ -611,57 +630,33 @@ But, some advantage of the time-domain are:
 * the start and end of signals can be simply defined.
 
 
-### Gravitational-wave parameters ###
+### Multiple detectors ###
 
-CBC signals are defined by 15 parameters (only 9 for a non-spinning system):
-
-<!--\scalebox{0.8}{\begin{columns}[T]
-\begin{column}{0.5\textwidth}-->
-
-Spinning/non-spinning:
-
- * component masses ($m_i$ where $m_1 > m_2$)
- * a reference time, e.g., the coalescence time $t_c$
- * the orbital phase at $t_c$, $\phi_c$
- * sky position (right ascension $\alpha$ and declination $\delta$)
- * luminosity distance $d_L$
- * polarisation angle $\psi$
-
-<!--\end{column}
-\begin{column}{0.5\textwidth}-->
-
-Spinning sources:
-
- * dimensionless spin magnitudes $a_i = |\vec{s}_i| c / G m_i^2$ where $\vec{s}_i$ is the spin vector.
- * two angles defining $\vec{s}_i$ specifying the orientation with respect to the plane defined by the line of sight and the initial orbital angular momentum.
- 
-<!--\end{column}
-\end{columns}}-->
+If you have $M$ detectors, assuming the noise in each is independent, you can coherently combine them
+by taking the product of the likelihoods for each, so
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.8]}]{align*}
+p(\bm{\mathcal{D}}|\bm{\theta},I) & \propto \prod_{j=1}^M p(\bm{d}_j|\bm{\theta},I) \nonumber \\
+& = \exp{\left(-\frac{1}{2}\left[4\sum_{j=1}^M\sum_{i=1}^{N_j}\frac{\left|\tilde{d}_{ij} - \tilde{s}_{ij}(\bm{\theta}) \right|^2}{T_j S_{n_j}^{(i)}}\right]\right)},
+\end{empheq}-->
+where $\bm{\mathcal{D}} = \{\bm{d}_1, \bm{d}_2, \dots, \bm{d}_M\}$ is the combined data
+from all detectors.
 
 
-### Gravitational-wave parameters ###
+### Analytical marginalisation ###
+
+For the standard GW likelihood function and a certain forms of the signal model, it
+is possible to analytically marginalise out certain parameters. For example, if the signal
+consists of a sinusoidal term with an initial phase, e.g., $s \propto e^{i\phi_0}$, then
+<!--\begin{empheq}[box={\borderedmathbox[scale=0.8]}]{align*}
+p(\bm{d}|\bm{\theta}', I) &\propto \int_0^{2\pi} p(\bm{d}|\bm{\theta}) p(\phi_0|I) {\rm d}\phi_0, \nonumber \\
+& = \exp{\left(-\frac{2}{T} \sum_i \frac{|s_i(\bm{\theta}')|^2 + |d_i|^2)}{S_n^{(i)}}\right)} I_0\left(\frac{4}{T} \left|\sum_i \frac{s_i(\bm{\theta}')d_i^*}{S_n^{(i)}}\right|\right),
+\end{empheq}-->
+where $\bm{\theta}'$ contains all the parameters of $\bm{\theta}$ except $\phi_0$ <!--\citep[see Equation (20) of][]{2015PhRvD..91d2003V}-->. 
 
 
-You're free to choose whatever priors you want, but commonly we use priors that are (see <!--\citet{2015PhRvD..91d2003V}-->):
+### Hierarchical (multi-level) inference ###
 
-<!--\begin{columns}\begin{column}{0.6\textwidth} -->
- * <!-- {\scriptsize uniform in component masses with the constraints that $m_1 > m_2$ and $m_1 + m_2 < M_{\rm max}$}-->
- * <!-- {\scriptsize isotropic in orientation of the binary and sky position, so:}-->
-    * <!-- {\scriptsize $p(\iota, \psi, \phi_c) \propto \sin{\iota}$, and}-->
-    * <!-- {\scriptsize $p(\alpha, \delta) \propto \sin{\delta}$}-->
- * <!-- {\scriptsize uniform in volume (for the local universe), so $p(d_L) \propto d_L^2$ (from $p(d_L) = p(V)\left|\frac{{\rm d}V}{{\rm d}d_L}\right|)$, with $p(V) \propto 1$ and $V \propto d_L^3$).}-->
-
-<!--\end{column}\begin{column}{0.4\textwidth}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[keepaspectratio, width=\textwidth]{figures/massprior.png}
-\caption*{{\tiny Example of uniform mass prior from \citet{2015PhRvD..91d2003V}}.}
-\label{massprior}
-\end{figure}
-
-\end{column}\end{columns}-->
-
+Add one or two slides on this!
 
 <!--% Bibliography slide -->
 ### Bibliography ###
@@ -684,7 +679,7 @@ You're free to choose whatever priors you want, but commonly we use priors that 
 \newblock {\em Publ. Astron. Soc. Pac.}, 131, 024503, 2019.}
 
 \bibitem[{{Ashton} {et~al.}(2019){Ashton}, \& et~al.}]{Ashton:2019}
-{\scriptsize G. Ashton et~al.
+{\scriptsize G.\ Ashton et~al.
 \newblock{\href{https://ui.adsabs.harvard.edu/abs/2019ApJS..241...27A/abstract}{\color{blue}{BILBY: A User-friendly Bayesian Inference Library for Gravitational-wave Astronomy}}}
 \newblock{\em Astrophys. J. Supplement Series}, 241, 27, 2019.}
 
@@ -697,6 +692,11 @@ You're free to choose whatever priors you want, but commonly we use priors that 
 {\scriptsize B.~P. Abbott et~al.
 \newblock{\href{https://ui.adsabs.harvard.edu/abs/2016PhRvL.116x1102A/abstract}{\color{blue}{Properties of the Binary Black Hole Merger GW150914}}}
 \newblock{\em Phys.\ Rev.\ Lett.}, 116, 241102, 2016.}
+
+\bibitem[{{Veitch} \& {Vecchio}(2006){Veitch}, \& {Vecchio}}]{Veitch:2010}
+{\scriptsize J.\ Veitch \& A.\ Vecchio
+\newblock {\href{https://ui.adsabs.harvard.edu/abs/2010PhRvD..81f2003V/abstract}{\color{blue}{Bayesian coherent analysis of in-spiral gravitational wave signals with a detector network}}}.
+\newblock {\em Phys.\ Rev.\ D}, 81, 062003, 2010.}
 
 \end{thebibliography}
 -->
