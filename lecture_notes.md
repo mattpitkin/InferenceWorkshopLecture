@@ -525,17 +525,20 @@ p(m_1, m_2|\bm{d}, I) \propto \int^{\bm{\theta}_{\not\in \{m_1, m_2\}}} p(\bm{d}
 
 ### Examples of inference in gravitational-wave astronomy ###
 
-A (non-exhaustive) list examples of where Bayesian inference has been used in (ground-based) gravitational-wave astronomy is:
-
-* Searches for continuous (monochromatic) gravitational waves from known pulsars
-* Source parameter estimation for CBC signals
-* Rapid CBC source sky and distance localisation (<!--{\textsc{BayeStar}}-->)
-* Unmodelled burst event trigger generator (<!--{\textsc{BlockNormal}}-->)
-* Unmodelled burst waveform reconstruction, glitch reconstruction, and power spectrum estimation (<!--{\textsc{BayesWave}}-->)
-* Unmodelled burst parameter estimation (oLIB)
-* Supernova signal model comparison (SMEE)
-* Hierarchical inference of CBC mass and spin distributions
-
+<!--
+\vspace*{-0.5cm}
+{\scriptsize A (non-exhaustive) list examples of where Bayesian inference has been used in (ground-based) gravitational-wave astronomy is:}
+\begin{itemize}
+\item {\scriptsize Searches for continuous (monochromatic) gravitational waves from known pulsars (\href{https://arxiv.org/abs/gr-qc/0508096}{Dupuis \& Woan, arXiv:gr-qc/0508096})}
+\item {\scriptsize Source parameter estimation for CBC signals \citep{Abbott:2016}}
+\item {\scriptsize Rapid CBC source sky and distance localisation ({\textsc{BayeStar}}) (\href{https://arxiv.org/abs/1508.03634}{Singer \& Price, arXiv:1508.03634})}
+\item {\scriptsize Unmodelled burst event trigger generator ({\textsc{BlockNormal}}) (\href{https://arxiv.org/abs/gr-qc/0404123}{McNabb et.~al, arXiv:gr-qc/0404123})}
+\item {\scriptsize Unmodelled burst waveform reconstruction, glitch reconstruction, and power spectrum estimation ({\textsc{BayesWave}}) (\href{https://arxiv.org/abs/1410.3835}{Cornish \& Littenberg, arXiv:1410.3835})}
+\item {\scriptsize Unmodelled burst parameter estimation (oLIB) (\href{https://arxiv.org/abs/1511.05955}{Lynch et.~al, arXiv:1511.05955})}
+\item {\scriptsize Supernova signal model comparison (SMEE) (\href{https://arxiv.org/abs/1202.3256}{Logue et.~al, arXiv:1202.3256})}
+\item {\scriptsize Hierarchical inference of CBC mass \citep{Abbott:2016b} and spin distributions}
+\end{itemize}
+-->
 
 ### Anatomy of the GW likelihood function ###
 
@@ -724,7 +727,12 @@ p(\alpha|\bm{\mathcal{D}}, I) = \left[ \prod_{i=1}^N \int^{\bm{\theta}_i} p(\bm{
 ### Bibliography ###
 
 <!--
-\vspace*{-0.7cm}
+%\vspace*{-1.2cm}
+\makebox[\linewidth][c]{
+\begin{minipage}{\dimexpr\textwidth+4em\relax}
+\begin{singlespace*}
+\raggedright
+
 \bibliographystyle{unsrtnat}
 
 \begin{thebibliography}{99}
@@ -781,6 +789,8 @@ p(\alpha|\bm{\mathcal{D}}, I) = \left[ \prod_{i=1}^N \int^{\bm{\theta}_i} p(\bm{
 \newblock{\em Phys.\ Rev.\ X}, 6, 041015, 2016b.}
 
 \end{thebibliography}
+\end{singlespace*}
+\end{minipage}}
 -->
 
 
