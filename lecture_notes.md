@@ -62,7 +62,7 @@ Some useful papers to read are:
 * The <!--\textsc{PyCBC Inference} paper \href{https://ui.adsabs.harvard.edu/abs/2019PASP..131b4503B/abstract}{\citep{Biwer:2018osg}}-->
 * The <!--\textsc{Bilby} paper \href{https://ui.adsabs.harvard.edu/abs/2019ApJS..241...27A/abstract}{\citep{Ashton:2019}}-->
 * _Data analysis recipes: Fitting a model to data_, <!--\href{https://arxiv.org/abs/1008.4686}{\citet{Hogg:2010}}-->
-* _An introduction to Bayesian inference in gravitational-wave astronomy: Parameter estimation, model selection, and hierarchical models_, <!--\href{https://ui.adsabs.harvard.edu/abs/2019PASA...36...10T/abstract}{\citet{Thrane:2019}}-->
+* _An introduction to Bayesian inference in gravitational-wave astronomy: Parameter estimation, model comparison, and hierarchical models_, <!--\href{https://ui.adsabs.harvard.edu/abs/2019PASA...36...10T/abstract}{\citet{Thrane:2019}}-->
 
 There are many more...
 
@@ -296,6 +296,16 @@ be ignored. However, the evidence allows you to compare different models (say $\
 \mathcal{O}_{12} \equiv \redub{\frac{p(\mathcal{H}_1|\bm{d}, I)}{p(\mathcal{H}_2|\bm{d}, I)}}_{\mathclap{\text{Model Odds}}} = \redob{\frac{p(\bm{d}|\mathcal{H}_1, I)}{p(\bm{d}|\mathcal{H}_2, I)}}^{\mathclap{\text{Bayes Factor}}} \redob{\frac{p(\mathcal{H}_1| I)}{p(\mathcal{H}_2| I)}}^{\mathclap{\text{Prior Odds}}}.
 \end{empheq}
 {\footnotesize The \href{https://en.wikipedia.org/wiki/Bayes\_factor}{\bf \color{violet}{Bayes factor}} is the ratio of the evidences for the two hypotheses (see also the \href{https://en.wikipedia.org/wiki/Likelihood-ratio\_test}{\bf \color{violet}{likelihood ratio}}). The prior odds defines the {\it a priori} relative degree-of-belief about each model, which in practice is often set to unity, i.e., neither model is preferred.}-->
+
+
+### Model comparison ###
+
+<!--\begin{figure}[htbp]
+\centering
+\includegraphics[keepaspectratio, width=1.0\textwidth]{figures/cwmodelselection.png}
+\caption*{{\tiny Odds distributions in searches for gravitational waves with various combinations of non-GR polarisation modes from known pulsars \citep{Abbott:2018}.}}
+\label{modelcomparison}
+\end{figure}-->
 
 
 ### Bayesian credible interval ###
@@ -744,6 +754,11 @@ p(\alpha|\bm{\mathcal{D}}, I) = \left[ \prod_{i=1}^N \int^{\bm{\theta}_i} p(\bm{
 {\tiny E. Thrane \& C. Talbot
 \newblock {\href{https://ui.adsabs.harvard.edu/abs/2019PASA...36...10T/abstract}{\color{blue}{An introduction to Bayesian inference in gravitational-wave astronomy: Parameter estimation, model selection, and hierarchical models}}}
 \newblock {\em Publ. Astron. Soc. Aus.}, 36, e010, 2019.}
+
+\bibitem[{{Abbott} {et~al.}(2018){Abbott}, \& et~al.}]{Abbott:2018}
+{\tiny B.~P. Abbott et~al.
+\newblock{\href{https://ui.adsabs.harvard.edu/abs/2018PhRvL.120c1104A/abstract}{\color{blue}{First Search for Nontensorial Gravitational Waves from Known Pulsars}}}
+\newblock{\em Phys.\ Rev.\ Lett.}, 120, 031104, 2018.}
 
 \bibitem[{{Sivia}(2006){Sivia}}]{Sivia}
 {\tiny D.~S. {Sivia}.
