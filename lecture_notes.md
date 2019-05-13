@@ -311,6 +311,17 @@ If $X=0.95$ then we can find $[\theta_a, \theta_b]$ that, e.g., gives the minimu
 The meaning of this is simple: _we are 95% sure that $\theta$ lies between $\theta_a$ and $\theta_b$._
 
 
+### Bayesian credible interval ###
+
+<!--\begin{figure}[htbp]
+\centering
+\includegraphics[keepaspectratio, width=1.0\textwidth]{figures/credint.pdf}
+\caption*{{\tiny Two 90\% credible intervals: symmetric in probability about the median (black), and
+the interval that spans the minimum range in $x$ ({\color{magenta} magenta}) (see \href{https://github.com/mattpitkin/InferenceWorkshopLecture/blob/master/figures/scripts/cred\_int.py}{\tt cred\_int.py}).}}
+\label{credint}
+\end{figure}-->
+
+
 ### The Gaussian/Normal Likelihood ###
 
 In many situations in physics and astronomy our data $d$ consists of the signal $s$ with some additive noise $n$, e.g., considering a single data point
