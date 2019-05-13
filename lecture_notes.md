@@ -690,17 +690,31 @@ We now, of course need to define priors on the hyperparameters!
 
 ### Hierarchical (multi-level) inference ###
 
-This can be used for population-level inference. For example, if you want to known the underlying distribution of primary black hole masses, $m_1$, in binary black hole systems then you might define a parameterised prior on $m_1$, such as a power law, then define a prior on the power law spectral index $\alpha$, and use a joint likelihood that is the product of likelihoods for many (say $N$) individual observed signals:
-<!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
+<!--
+\begin{columns}
+\begin{column}{0.55\textwidth}
+{\scriptsize This can be used for population-level inference. For example, if you want to known the underlying distribution of primary black hole masses, $m_1$, in binary black hole systems then you might define a parameterised prior on $m_1$, such as a power law, then define a prior on the power law spectral index $\alpha$, and use a joint likelihood that is the product of likelihoods for many (say $N$) individual observed signals}
+\end{column}
+\begin{column}{0.45\textwidth}
+\begin{figure}[htbp]
+\centering
+\includegraphics[keepaspectratio, width=\textwidth]{figures/powerlaw.png}
+\caption*{{\tiny Posterior on the power law index, $\alpha$, for a prior on $m_1$ of $p(m_1|\alpha, I) \propto m_1^{-\alpha}$ for the binary black hole systems observed during O1 \citep{Abbott:2016b}}}
+\label{marginalisation}
+\end{figure}
+\end{column}
+\end{columns}
+\begin{empheq}[box={\borderedmathbox[scale=0.7]}]{equation*}
 p(\alpha|\bm{\mathcal{D}}, I) = \left[ \prod_{i=1}^N \int^{\bm{\theta}_i} p(\bm{d}_i|\bm{\theta}_i) p(\bm{\theta}_{i}'|I) p({m_1}_i|\alpha, I) {\rm d} \bm{\theta}_i \right] p(\alpha|I),
-\end{empheq}-->
-where $\bm{\theta}_{i}'$ are the parameters for each individual source, and contain all the parameters except ${m_1}_i$.
+\end{empheq}
+{\scriptsize where $\bm{\theta}_{i}'$ are the parameters for each individual source, and contain all the parameters except ${m_1}_i$.}-->
 
 
 <!--% Bibliography slide -->
 ### Bibliography ###
 
 <!--
+\vspace*{-0.7cm}
 \bibliographystyle{unsrtnat}
 
 \begin{thebibliography}{99}
@@ -736,15 +750,20 @@ where $\bm{\theta}_{i}'$ are the parameters for each individual source, and cont
 \newblock {\em Data analysis: A Bayesian Tutorial}.
 \newblock Oxford University Press, 2006.}
 
-\bibitem[{{Abbott} {et~al.}(2016){Abbott}, \& et~al.}]{Abbott:2016}
+\bibitem[{{Abbott} {et~al.}(2016a){Abbott}, \& et~al.}]{Abbott:2016}
 {\tiny B.~P. Abbott et~al.
 \newblock{\href{https://ui.adsabs.harvard.edu/abs/2016PhRvL.116x1102A/abstract}{\color{blue}{Properties of the Binary Black Hole Merger GW150914}}}
-\newblock{\em Phys.\ Rev.\ Lett.}, 116, 241102, 2016.}
+\newblock{\em Phys.\ Rev.\ Lett.}, 116, 241102, 2016a.}
 
 \bibitem[{{Veitch} \& {Vecchio}(2006){Veitch}, \& {Vecchio}}]{Veitch:2010}
 {\tiny J.\ Veitch \& A.\ Vecchio
 \newblock {\href{https://ui.adsabs.harvard.edu/abs/2010PhRvD..81f2003V/abstract}{\color{blue}{Bayesian coherent analysis of in-spiral gravitational wave signals with a detector network}}}.
 \newblock {\em Phys.\ Rev.\ D}, 81, 062003, 2010.}
+
+\bibitem[{{Abbott} {et~al.}(2016b){Abbott}, \& et~al.}]{Abbott:2016b}
+{\tiny B.~P. Abbott et~al.
+\newblock{\href{https://ui.adsabs.harvard.edu/abs/2016PhRvX...6d1015A/abstract}{\color{blue}{Binary Black Hole Mergers in the First Advanced LIGO Observing Run}}}
+\newblock{\em Phys.\ Rev.\ X}, 6, 041015, 2016b.}
 
 \end{thebibliography}
 -->
