@@ -69,20 +69,17 @@ There are many more...
 
 ### Bayes' theorem ###
 
-From the <!--\href{https://en.wikipedia.org/wiki/Chain\_rule\_(probability)}{\bf \color{violet}{product rule}}--> of probability it can be shown that
-<!--\begin{empheq}[box={\borderedmathbox}]{equation*}
+<!--{\small From the \href{https://en.wikipedia.org/wiki/Chain\_rule\_(probability)}{\bf \color{violet}{product rule}} of probability it can be shown that}
+\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
     P(A\text{ and }B) \equiv P(A,B) = P(A)P(B|A) = P(B)P(A|B), 
-\end{empheq}-->
-where $P(x|y)$ means "the probability that $x$ is true given $y$ is true".[^fnp] Rearranging this gives
-<!--\begin{empheq}[box={\borderedmathbox}]{equation*}
+\end{empheq}
+{\small where $P(x|y)$ means ``the probability that $x$ is true given $y$ is true''.}\footnote{sometimes ``P'' is used for ``probability'' and ``p'' is use for a ``probability density'' - the same rules apply in both cases.} {\small Rearranging this gives}
+\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
     P(B|A,I) = \frac{P(A|B,I)P(B|I)}{P(A|I)}.
-\end{empheq}-->
-This is <!--\href{https://en.wikipedia.org/wiki/Bayes\%27\_theorem}{{\color{violet}{\bf Bayes' theorem}}}-->.
+\end{empheq}
+{\small This is \href{https://en.wikipedia.org/wiki/Bayes\%27\_theorem}{\color{violet}{\bf Bayes' theorem}}.}
 
-Note: we we have explicitly added the conditioning on background information $I$.
-
-[^fnp]: sometimes "P" is used for "probability" and "p" is use for a "probability density" - the same rules
-apply in both cases.
+{\small Note: we we have explicitly added the conditioning on background information $I$.}-->
 
 
 ### Bayes' theorem ###
@@ -222,7 +219,7 @@ data
 The probability distribution for a _discrete_ parameter is called the <!--\href{https://en.wikipedia.org/wiki/Probability\_mass\_function}{{\bf {\color{violet} probability mass function}} (PMF)}-->. The value of the PMF at a
 particular value of the parameter (say $H$) is the _probability_ for that value, and we must have:
 <!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
-\sum_{i=1}^N P(H| I) = 1.
+\sum_{i=1}^N P(H_i| I) = 1.
 \end{empheq}-->
 
 
@@ -283,9 +280,9 @@ stochastic sampling methods, e.g., <!--\href{https://en.wikipedia.org/wiki/Marko
 <!--\begin{empheq}[box={\borderedmathbox[scale=0.9]}]{equation*}
 p(\bm{d}|\mathcal{H},I) = \int^{\bm{\theta}} p(\bm{d}| \bm{\theta}, \mathcal{H}, I) p(\bm{\theta}|\mathcal{H}, I) {\rm d}\bm{\theta},
 \end{empheq}-->
-<!--{\footnotesize where the integral is multi-dimensional over all model parameters $\bm{\theta} = \{\theta_1, \theta_2, \dots, \theta_n\}$. Here we have explicitly stated that the likelihood and prior are conditional on a given model, or hypothesis, $\mathcal{H}$. Hence, the evidence is the {\it likelihood} of observing the data for a given model $\mathcal{H}, marginalised over its parameters$.}
+<!--{\footnotesize where the integral is multi-dimensional over all model parameters $\bm{\theta} = \{\theta_1, \theta_2, \dots, \theta_n\}$. Here we have explicitly stated that the likelihood and prior are conditional on a given model, or hypothesis, $\mathcal{H}$. Hence, the evidence is the {\it likelihood} of observing the data for a given model $\mathcal{H}$, marginalised over its parameters.}
 
-{\footnotesize The multi-dimensional integral may difficult/impossible to compute analytically or using standard numerical integration methods, so the \href{https://en.wikipedia.org/wiki/Nested\_sampling\_algorithm}{\bf \color{violet}{nested sampling}} algorithm may be required (see talk by John Veitch).}-->
+{\footnotesize The multi-dimensional integral may be difficult/impossible to compute analytically or using standard numerical integration methods, so the \href{https://en.wikipedia.org/wiki/Nested\_sampling\_algorithm}{\bf \color{violet}{nested sampling}} algorithm may be required (see talk by John Veitch).}-->
 
 
 ### Model comparison ###
@@ -377,7 +374,7 @@ p(\mathbf{d}|\bm{\theta},\sigma,I) &= \prod_{i=1}^N \frac{1}{\sqrt{2\pi\sigma^2}
 &= \left(2\pi\sigma^2\right)^{-N/2}\exp{\left(-\frac{1}{2}\sum_{i=1}^N\frac{\left(d_i-s_i(\bm{\theta})\right)^2}{\sigma^2} \right)}.
 \end{empheq}-->
 
-In this case, with a fixed value of $\sigma$, the noise is drawn from a <!--\href{https://en.wikipedia.org/wiki/Stationary\_process}{strictly (or strongly) \color{violet}{\bf stationary process}}-->.
+In this case, with a fixed value of $\sigma$, it assumes the noise is drawn from a <!--\href{https://en.wikipedia.org/wiki/Stationary\_process}{strictly (or strongly) \color{violet}{\bf stationary process}}-->.
 
 
 ### The joint likelihood: non-_i.i.d._ ###
@@ -418,12 +415,12 @@ The <!--\href{https://en.wikipedia.org/wiki/Autocorrelation}{\textbf{\color{viol
 
 ### Example: fitting a line ###
 
-<!--{\footnotesize As an example, we'll examine the problem of fitting a line $\bm{y} = m\bm{x}+c$ to data, $\bm{d}$ \href{https://en.wikipedia.org/wiki/Linear_regression}{\color{violet}{\bf linear regression}}). We can write the posterior for
+<!--{\footnotesize As an example, we'll examine the problem of fitting a line $\bm{y} = m\bm{x}+c$ to data, $\bm{d}$ (\href{https://en.wikipedia.org/wiki/Linear_regression}{\color{violet}{\bf linear regression}}). We can write the posterior for
 the parameters}
 \begin{empheq}[box={\borderedmathbox[scale=0.8]}]{equation*}
 p(m,c|\bm{d},I) \propto \redub{p(\bm{d}|m,c,I)}_{\mathclap{\text{Likelihood}}} \times \redub{p(m,c|I)}_{\mathclap{\text{Prior}}}.
 \end{empheq}
-{\footnotesize If the prior on the parameters is uniform and independent, so}
+{\footnotesize If the prior on the parameters is uniform and independent}
 \begin{empheq}[box={\borderedmathbox[scale=0.8]}]{equation*}
 p(m,c|I) = p(m|I)p(c|I) = \text{constant},
 \end{empheq}
@@ -727,10 +724,10 @@ p(\alpha|\bm{\mathcal{D}}, I) = \left[ \prod_{i=1}^N \int^{\bm{\theta}_i} p(\bm{
 ### Bibliography ###
 
 <!--
-%\vspace*{-1.2cm}
+\vspace*{-1cm}
 \makebox[\linewidth][c]{
 \begin{minipage}{\dimexpr\textwidth+4em\relax}
-\begin{singlespace*}
+%\begin{singlespace*}
 \raggedright
 
 \bibliographystyle{unsrtnat}
@@ -789,7 +786,7 @@ p(\alpha|\bm{\mathcal{D}}, I) = \left[ \prod_{i=1}^N \int^{\bm{\theta}_i} p(\bm{
 \newblock{\em Phys.\ Rev.\ X}, 6, 041015, 2016b.}
 
 \end{thebibliography}
-\end{singlespace*}
+%\end{singlespace*}
 \end{minipage}}
 -->
 
